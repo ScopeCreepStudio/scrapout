@@ -18,6 +18,24 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float jumpF;
     [SerializeField] bool canJump;
 
+    [Header("Sliding")]
+    [SerializeField] KeyCode slideKey = KeyCode.LeftControl;
+    [SerializeField] float slideDuration = 0.5f;
+    [SerializeField] float slideCooldown = 1f;
+    [SerializeField] float slideSpeedMultiplier = 1.5f;
+    [SerializeField] float slideDrag = 0.1f;
+    float slideTimer;
+    float slideCooldownTimer;
+    public bool isSliding;
+
+    [Header("Crouching")]
+    [SerializeField] float crouchCameraHeight = 0.25f;
+    [SerializeField] float slideCameraHeight = 0.35f;
+    [SerializeField] float standingCameraHeight = 0.5f;
+    [SerializeField] float crouchTransitionSpeed = 8f;
+    [SerializeField] float minSlideSpeed = 5f;
+    public bool isCrouching;
+    Vector3 cameraHolderStartPos;
 
     [Header("Ground Checker")]
     [SerializeField] float pHeight;
@@ -28,11 +46,21 @@ public class PlayerController : MonoBehaviour
     [Header("References")]
     [SerializeField] Transform direction;
     [SerializeField] Transform cameraHolder;
-    [SerializeField] CinemachineVirtualCamera virtualCamera;
+    [SerializeField] CinemachineCamera virtualCamera;
 
     [Header("Mouse Look")]
     [SerializeField] float mouseSensitivity = 2f;
     [SerializeField] float cameraPitchLimit = 85f;
+
+    [Header("Camera FOV")]
+    [SerializeField] float defaultFOV = 60f;
+    [SerializeField] float sprintFOV = 70f;
+    [SerializeField] float slideFOV = 75f;
+    [SerializeField] float jumpFOV = 65f;
+    [SerializeField] float fovChangeSpeed = 8f;
+    [SerializeField] float minSprintFOVSpeed = 4.5f;
+    float currentFOV;
+    float fovVelocity;
 
     [Header("KeyBinds")]
     [SerializeField] KeyCode jumpKey = KeyCode.Space;
@@ -40,6 +68,8 @@ public class PlayerController : MonoBehaviour
 
     //Camera rotation
     float pitch;
+
+    public bool CanJump => canJump;
 
     //Private Floats
     float horizontalInput;
@@ -71,11 +101,6 @@ public class PlayerController : MonoBehaviour
             cameraHolder = holder.transform;
         }
 
-        if (virtualCamera == null)
-        {
-            virtualCamera = FindObjectOfType<CinemachineVirtualCamera>();
-        }
-
         if (virtualCamera != null)
         {
             if (virtualCamera.Follow == null)
@@ -83,6 +108,12 @@ public class PlayerController : MonoBehaviour
             if (virtualCamera.LookAt == null)
                 virtualCamera.LookAt = cameraHolder;
         }
+
+        if (cameraHolder != null)
+            cameraHolderStartPos = cameraHolder.localPosition;
+
+        if (virtualCamera != null)
+            currentFOV = virtualCamera.Lens.FieldOfView;
     }
 
     private void Update()
@@ -92,6 +123,12 @@ public class PlayerController : MonoBehaviour
 
         //Handle mouse look
         HandleMouseLook();
+
+        //Handle slide and crouch
+        HandleSlide();
+
+        //Handle camera FOV
+        HandleFOV();
 
         //Jumping
         if (Input.GetKey(jumpKey) && checkGround() && canJump)
@@ -103,8 +140,8 @@ public class PlayerController : MonoBehaviour
             Invoke(nameof(ResetJump), 0.75f);
         }
 
-        //Sprinting
-        if (Input.GetKey(sprintKey))
+        //Sprinting - can't sprint while crouching or sliding
+        if (Input.GetKey(sprintKey) && !isCrouching && !isSliding)
         {
             isSprinting = true;
         }
@@ -132,12 +169,93 @@ public class PlayerController : MonoBehaviour
             direction.rotation = Quaternion.Euler(0f, transform.eulerAngles.y, 0f);
     }
 
+    void HandleSlide()
+    {
+        //Update slide timer
+        if (slideTimer > 0)
+            slideTimer -= Time.deltaTime;
+        else
+            isSliding = false;
+
+        //Update cooldown
+        if (slideCooldownTimer > 0)
+            slideCooldownTimer -= Time.deltaTime;
+
+        //Handle slide initiation - only on key press, only while sprinting
+        if (Input.GetKeyDown(slideKey) && checkGround() && isSprinting && slideCooldownTimer <= 0)
+        {
+            isSliding = true;
+            slideTimer = slideDuration;
+            slideCooldownTimer = slideCooldown;
+            isCrouching = false;
+        }
+
+        //Handle crouch hold (separate from slide) - only if not sliding
+        if (!isSliding)
+        {
+            if (Input.GetKey(slideKey) && checkGround())
+            {
+                isCrouching = true;
+            }
+            else
+            {
+                isCrouching = false;
+            }
+        }
+        else
+        {
+            //Force uncrouch while sliding
+            isCrouching = false;
+        }
+
+        //Update camera height
+        if (cameraHolder != null)
+        {
+            float targetHeight = standingCameraHeight;
+            if (isSliding)
+                targetHeight = slideCameraHeight;
+            else if (isCrouching)
+                targetHeight = crouchCameraHeight;
+            Vector3 targetPos = cameraHolderStartPos;
+            targetPos.y = targetHeight;
+            cameraHolder.localPosition = Vector3.Lerp(cameraHolder.localPosition, targetPos, Time.deltaTime * crouchTransitionSpeed);
+        }
+    }
+
+    void HandleFOV()
+    {
+        if (virtualCamera == null) return;
+
+        float targetFOV = defaultFOV;
+
+        Vector3 horizontalVel = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
+        float speed = horizontalVel.magnitude;
+
+        if (isSliding)
+            targetFOV = slideFOV;
+        else if (isSprinting && speed >= minSprintFOVSpeed)
+            targetFOV = sprintFOV;
+        else if (!checkGround())
+            targetFOV = jumpFOV;
+
+        float smoothTime = Mathf.Max(0.01f, 1f / fovChangeSpeed);
+        currentFOV = Mathf.SmoothDamp(currentFOV, targetFOV, ref fovVelocity, smoothTime);
+
+        var lens = virtualCamera.Lens;
+        lens.FieldOfView = currentFOV;
+        virtualCamera.Lens = lens;
+    }
+
 
     void FixedUpdate()
     {
         movementDirection = direction.forward * verticalInput + direction.right * horizontalInput;
 
         float currentMaxSpeed = isSprinting ? sprintSpeed : walkSpeed;
+        
+        //Apply slide speed multiplier
+        if (isSliding)
+            currentMaxSpeed *= slideSpeedMultiplier;
 
         if (checkGround())
         {
@@ -182,8 +300,8 @@ public class PlayerController : MonoBehaviour
             Vector3 finalLimit = velLimit.normalized * currentMaxSpeed;
             rb.linearVelocity = new Vector3(finalLimit.x, rb.linearVelocity.y, finalLimit.z);
 
-            if (!isSprinting) { Debug.Log("Limited Velocity for walking"); }
-            else { Debug.Log("Limited Velocity for running"); }
+            // if (!isSprinting) { Debug.Log("Limited Velocity for walking"); }
+            // else { Debug.Log("Limited Velocity for running"); }
         }
     }
 
