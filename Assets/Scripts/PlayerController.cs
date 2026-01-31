@@ -1,6 +1,7 @@
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Serialization;
+using Unity.Cinemachine;
 
 public class PlayerController : MonoBehaviour
 {
@@ -26,11 +27,19 @@ public class PlayerController : MonoBehaviour
 
     [Header("References")]
     [SerializeField] Transform direction;
-    [SerializeField] CameraController cameraControl;
+    [SerializeField] Transform cameraHolder;
+    [SerializeField] CinemachineVirtualCamera virtualCamera;
+
+    [Header("Mouse Look")]
+    [SerializeField] float mouseSensitivity = 2f;
+    [SerializeField] float cameraPitchLimit = 85f;
 
     [Header("KeyBinds")]
     [SerializeField] KeyCode jumpKey = KeyCode.Space;
     [SerializeField] KeyCode sprintKey = KeyCode.LeftShift;
+
+    //Camera rotation
+    float pitch;
 
     //Private Floats
     float horizontalInput;
@@ -40,15 +49,49 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
         canJump = true;
+
+        if (cameraHolder == null)
+        {
+            Transform found = transform.Find("CameraHolder");
+            if (found != null)
+                cameraHolder = found;
+        }
+
+        if (cameraHolder == null)
+        {
+            GameObject holder = new GameObject("CameraHolder");
+            holder.transform.SetParent(transform);
+            holder.transform.localPosition = Vector3.zero;
+            holder.transform.localRotation = Quaternion.identity;
+            cameraHolder = holder.transform;
+        }
+
+        if (virtualCamera == null)
+        {
+            virtualCamera = FindObjectOfType<CinemachineVirtualCamera>();
+        }
+
+        if (virtualCamera != null)
+        {
+            if (virtualCamera.Follow == null)
+                virtualCamera.Follow = cameraHolder;
+            if (virtualCamera.LookAt == null)
+                virtualCamera.LookAt = cameraHolder;
+        }
     }
 
     private void Update()
     {
         horizontalInput = Input.GetAxisRaw("Horizontal");
         verticalInput = Input.GetAxisRaw("Vertical");
+
+        //Handle mouse look
+        HandleMouseLook();
 
         //Jumping
         if (Input.GetKey(jumpKey) && checkGround() && canJump)
@@ -70,6 +113,23 @@ public class PlayerController : MonoBehaviour
         if (checkGround()) { rb.linearDamping = floorDrag; }
         else { rb.linearDamping = 0f; }
 
+    }
+
+    void HandleMouseLook()
+    {
+        float mx = Input.GetAxis("Mouse X") * mouseSensitivity;
+        float my = Input.GetAxis("Mouse Y") * mouseSensitivity;
+
+        transform.Rotate(Vector3.up * mx);
+
+        pitch -= my;
+        pitch = Mathf.Clamp(pitch, -cameraPitchLimit, cameraPitchLimit);
+
+        if (cameraHolder != null)
+            cameraHolder.localEulerAngles = new Vector3(pitch, 0f, 0f);
+
+        if (direction != null)
+            direction.rotation = Quaternion.Euler(0f, transform.eulerAngles.y, 0f);
     }
 
 
