@@ -53,6 +53,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] Transform cameraHolder;
     [SerializeField] CinemachineCamera virtualCamera;
     [SerializeField] AudioManager audioManager;
+    [SerializeField] GunAssembler gun;
 
     [Header("Mouse Look")]
     [SerializeField] float mouseSensitivity = 2f;
@@ -144,6 +145,12 @@ public class PlayerController : MonoBehaviour
 
         //Handle footsteps
         HandleFootsteps();
+
+        //Handle shooting
+        if (Input.GetMouseButton(0))
+        {
+            gun?.Shoot(cameraHolder.position, cameraHolder.forward);
+        }
 
         //Jumping
         if (Input.GetKey(jumpKey) && checkGround() && canJump)
