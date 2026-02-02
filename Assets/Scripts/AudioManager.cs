@@ -94,6 +94,7 @@ public class AudioManager : MonoBehaviour
     {
         GameObject tempAudio = new GameObject("TempAudio");
         tempAudio.transform.position = position;
+        //TODO; pooling, add the uhhh AudioSource component to an existing object instead of creating new one each time!!!!
         
         AudioSource source = tempAudio.AddComponent<AudioSource>();
         source.clip = clip;
