@@ -177,8 +177,8 @@ public class PlayerController : MonoBehaviour
 
     void HandleMouseLook()
     {
-        float mx = Input.GetAxis("Mouse X") * mouseSensitivity;
-        float my = Input.GetAxis("Mouse Y") * mouseSensitivity;
+        float mx = Input.GetAxisRaw("Mouse X") * mouseSensitivity;
+        float my = Input.GetAxisRaw("Mouse Y") * mouseSensitivity;
 
         transform.Rotate(Vector3.up * mx);
 
