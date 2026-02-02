@@ -37,6 +37,11 @@ public class PlayerController : MonoBehaviour
     public bool isCrouching;
     Vector3 cameraHolderStartPos;
 
+    [Header("Footsteps")]
+    [SerializeField] float walkFootstepInterval = 0.5f;
+    [SerializeField] float sprintFootstepInterval = 0.3f;
+    float footstepTimer;
+
     [Header("Ground Checker")]
     [SerializeField] float pHeight;
     [SerializeField] float floorDrag;
@@ -47,6 +52,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] Transform direction;
     [SerializeField] Transform cameraHolder;
     [SerializeField] CinemachineCamera virtualCamera;
+    [SerializeField] AudioManager audioManager;
 
     [Header("Mouse Look")]
     [SerializeField] float mouseSensitivity = 2f;
@@ -76,6 +82,7 @@ public class PlayerController : MonoBehaviour
     float verticalInput;
     Rigidbody rb;
     Vector3 movementDirection;
+    bool wasGrounded;
 
     void Start()
     {
@@ -114,6 +121,11 @@ public class PlayerController : MonoBehaviour
 
         if (virtualCamera != null)
             currentFOV = virtualCamera.Lens.FieldOfView;
+
+        if (audioManager == null)
+            audioManager = AudioManager.instance;
+
+        wasGrounded = checkGround();
     }
 
     private void Update()
@@ -130,11 +142,15 @@ public class PlayerController : MonoBehaviour
         //Handle camera FOV
         HandleFOV();
 
+        //Handle footsteps
+        HandleFootsteps();
+
         //Jumping
         if (Input.GetKey(jumpKey) && checkGround() && canJump)
         {
             canJump = false;
             Jumping();
+            audioManager?.PlayJumpSound(transform.position);
 
             //Without this, the jump will be inconsistent with the jump force value.
             Invoke(nameof(ResetJump), 0.75f);
@@ -149,6 +165,13 @@ public class PlayerController : MonoBehaviour
 
         if (checkGround()) { rb.linearDamping = floorDrag; }
         else { rb.linearDamping = 0f; }
+
+        //Handle landing sound
+        if (wasGrounded == false && checkGround() == true)
+        {
+            audioManager?.PlayLandSound(transform.position);
+        }
+        wasGrounded = checkGround();
 
     }
 
@@ -188,6 +211,7 @@ public class PlayerController : MonoBehaviour
             slideTimer = slideDuration;
             slideCooldownTimer = slideCooldown;
             isCrouching = false;
+            audioManager?.PlaySlideSound(transform.position);
         }
 
         //Handle crouch hold (separate from slide) - only if not sliding
@@ -244,6 +268,35 @@ public class PlayerController : MonoBehaviour
         var lens = virtualCamera.Lens;
         lens.FieldOfView = currentFOV;
         virtualCamera.Lens = lens;
+    }
+
+    void HandleFootsteps()
+    {
+        if (!checkGround() || isSliding) return;
+
+        bool isMoving = horizontalInput != 0 || verticalInput != 0;
+        if (!isMoving) return;
+
+        float interval = isSprinting ? sprintFootstepInterval : walkFootstepInterval;
+        footstepTimer -= Time.deltaTime;
+
+        if (footstepTimer <= 0f)
+        {
+            footstepTimer = interval;
+            PlayFootstepSound();
+        }
+    }
+
+    void PlayFootstepSound()
+    {
+        if (audioManager == null) return;
+
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position, Vector3.down, out hit, pHeight + 0.1f, isGround))
+        {
+            string surfaceTag = hit.collider.tag;
+            audioManager.PlayFootstep(transform.position, surfaceTag);
+        }
     }
 
 
