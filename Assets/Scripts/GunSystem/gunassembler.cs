@@ -21,6 +21,7 @@ public class GunAssembler : MonoBehaviour
     private Dictionary<GunPartType, GameObject> currentModels = new();
     private List<GunPart> equippedParts = new();
     private float lastShootTime;
+    private Transform currentBodyRoot;
 
     public void EquipPart(GunPart part)
     {
@@ -54,6 +55,11 @@ public class GunAssembler : MonoBehaviour
         }
 
         currentModels[part.partType] = model;
+
+        if (part.partType == GunPartType.GunBody)
+        {
+            currentBodyRoot = model.transform;
+        }
 
         // Replace part data
         equippedParts.RemoveAll(p => p.partType == part.partType);
@@ -92,6 +98,13 @@ public class GunAssembler : MonoBehaviour
 
     Transform GetAttachPoint(GunPartType type)
     {
+        if (type == GunPartType.GunBody)
+            return transform;
+
+        Transform bodyPoint = GetBodyAttachPoint(type);
+        if (bodyPoint != null)
+            return bodyPoint;
+
         return type switch
         {
             GunPartType.Barrel => barrelPoint,
@@ -101,6 +114,34 @@ public class GunAssembler : MonoBehaviour
             GunPartType.Grip => gripPoint,
             _ => null
         };
+    }
+
+    private Transform GetBodyAttachPoint(GunPartType type)
+    {
+        if (currentBodyRoot == null) return null;
+
+        string pointName = type switch
+        {
+            GunPartType.Barrel => "BarrelPoint",
+            GunPartType.Stock => "StockPoint",
+            GunPartType.Magazine => "MagazinePoint",
+            GunPartType.Optic => "OpticPoint",
+            GunPartType.Grip => "GripPoint",
+            _ => null
+        };
+
+        if (string.IsNullOrEmpty(pointName)) return null;
+
+        Transform found = currentBodyRoot.Find(pointName);
+        if (found != null) return found;
+
+        foreach (Transform child in currentBodyRoot.GetComponentsInChildren<Transform>(true))
+        {
+            if (child.name == pointName)
+                return child;
+        }
+
+        return null;
     }
 
     public GunStats CalculateStats(GunStats baseStats)

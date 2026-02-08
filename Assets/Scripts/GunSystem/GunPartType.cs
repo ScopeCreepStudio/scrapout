@@ -1,5 +1,6 @@
 public enum GunPartType
 {
+    GunBody,
     Barrel,
     Stock,
     Magazine,

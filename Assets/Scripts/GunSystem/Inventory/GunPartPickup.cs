@@ -19,10 +19,18 @@ public class GunPartPickup : MonoBehaviour
 
         if (autoEquip)
         {
-            GunAssembler assembler = other.GetComponentInParent<GunAssembler>();
-            if (assembler != null && part != null)
+            PlayerGunLoadout loadout = other.GetComponentInParent<PlayerGunLoadout>();
+            if (loadout != null)
             {
-                assembler.EquipPart(part);
+                loadout.EquipPart(part);
+            }
+            else
+            {
+                GunAssembler assembler = other.GetComponentInParent<GunAssembler>();
+                if (assembler != null && part != null)
+                {
+                    assembler.EquipPart(part);
+                }
             }
         }
 

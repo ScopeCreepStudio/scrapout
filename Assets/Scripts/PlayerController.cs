@@ -75,6 +75,7 @@ public class PlayerController : MonoBehaviour
 
     //Camera rotation
     float pitch;
+    float yaw;
 
     public bool CanJump => canJump;
 
@@ -91,6 +92,7 @@ public class PlayerController : MonoBehaviour
         Cursor.visible = false;
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
+        rb.interpolation = RigidbodyInterpolation.Interpolate;
         canJump = true;
 
         if (cameraHolder == null)
@@ -127,6 +129,7 @@ public class PlayerController : MonoBehaviour
             audioManager = AudioManager.instance;
 
         wasGrounded = checkGround();
+        yaw = transform.eulerAngles.y;
     }
 
     private void Update()
@@ -187,16 +190,18 @@ public class PlayerController : MonoBehaviour
         float mx = Input.GetAxisRaw("Mouse X") * mouseSensitivity;
         float my = Input.GetAxisRaw("Mouse Y") * mouseSensitivity;
 
-        transform.Rotate(Vector3.up * mx);
-
+        yaw += mx;
         pitch -= my;
         pitch = Mathf.Clamp(pitch, -cameraPitchLimit, cameraPitchLimit);
+    }
 
+    void LateUpdate()
+    {
         if (cameraHolder != null)
             cameraHolder.localEulerAngles = new Vector3(pitch, 0f, 0f);
 
         if (direction != null)
-            direction.rotation = Quaternion.Euler(0f, transform.eulerAngles.y, 0f);
+            direction.rotation = Quaternion.Euler(0f, yaw, 0f);
     }
 
     void HandleSlide()
@@ -309,6 +314,7 @@ public class PlayerController : MonoBehaviour
 
     void FixedUpdate()
     {
+        rb.MoveRotation(Quaternion.Euler(0f, yaw, 0f));
         movementDirection = direction.forward * verticalInput + direction.right * horizontalInput;
 
         float currentMaxSpeed = isSprinting ? sprintSpeed : walkSpeed;

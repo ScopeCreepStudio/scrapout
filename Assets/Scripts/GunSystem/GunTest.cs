@@ -3,6 +3,7 @@ using UnityEngine;
 public class GunTest : MonoBehaviour
 {
     public GunAssembler gun;
+    public GunPart gunBody;
     public GunPart barrel;
     public GunPart stock;
     public GunPart magazine;
@@ -13,6 +14,7 @@ public class GunTest : MonoBehaviour
     {
         if (gun == null) return;
 
+        if (gunBody != null) gun.EquipPart(gunBody);
         if (barrel != null) gun.EquipPart(barrel);
         if (stock != null) gun.EquipPart(stock);
         if (magazine != null) gun.EquipPart(magazine);
