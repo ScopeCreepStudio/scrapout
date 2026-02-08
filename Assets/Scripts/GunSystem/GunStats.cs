@@ -7,4 +7,6 @@ public struct GunStats
     public float fireRate;
     public float recoil;
     public float accuracy;
+    public float range;
+    public int ammoCapacity;
 }

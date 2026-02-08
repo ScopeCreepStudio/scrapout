@@ -1,3 +1,4 @@
+using System.Reflection;
 using UnityEngine;
 
 public class UIDebug : MonoBehaviour
@@ -36,10 +37,17 @@ public class UIDebug : MonoBehaviour
         if (gun != null)
         {
             GUI.Label(new Rect(10, 80, 400, 20), "--- Gun Stats ---");
-            GUI.Label(new Rect(10, 100, 400, 20), $"Damage: {gun.GetCurrentStats().damage}");
-            GUI.Label(new Rect(10, 120, 400, 20), $"Fire Rate: {gun.GetCurrentStats().fireRate}");
-            GUI.Label(new Rect(10, 140, 400, 20), $"Accuracy: {gun.GetCurrentStats().accuracy}");
-            GUI.Label(new Rect(10, 160, 400, 20), $"Recoil: {gun.GetCurrentStats().recoil}");
+
+            GunStats stats = gun.GetCurrentStats();
+            FieldInfo[] fields = typeof(GunStats).GetFields(BindingFlags.Public | BindingFlags.Instance);
+
+            float y = 100f;
+            for (int i = 0; i < fields.Length; i++)
+            {
+                object value = fields[i].GetValue(stats);
+                GUI.Label(new Rect(10, y, 400, 20), $"{fields[i].Name}: {value}");
+                y += 20f;
+            }
         }
     }
 }

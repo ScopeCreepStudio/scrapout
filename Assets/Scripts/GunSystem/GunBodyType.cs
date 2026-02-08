@@ -1,0 +1,4 @@
+public enum GunBodyType
+{
+    Pistol
+}

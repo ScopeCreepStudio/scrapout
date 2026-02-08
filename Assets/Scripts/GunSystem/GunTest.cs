@@ -6,11 +6,17 @@ public class GunTest : MonoBehaviour
     public GunPart barrel;
     public GunPart stock;
     public GunPart magazine;
+    public GunPart optic;
+    public GunPart grip;
 
     void Start()
     {
-        gun.EquipPart(barrel);
-        gun.EquipPart(stock);
-        gun.EquipPart(magazine);
+        if (gun == null) return;
+
+        if (barrel != null) gun.EquipPart(barrel);
+        if (stock != null) gun.EquipPart(stock);
+        if (magazine != null) gun.EquipPart(magazine);
+        if (optic != null) gun.EquipPart(optic);
+        if (grip != null) gun.EquipPart(grip);
     }
 }

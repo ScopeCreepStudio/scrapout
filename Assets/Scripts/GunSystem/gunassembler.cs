@@ -7,7 +7,8 @@ public class GunAssembler : MonoBehaviour
     public Transform barrelPoint;
     public Transform stockPoint;
     public Transform magazinePoint;
-    public Transform sightPoint;
+    public Transform opticPoint;
+    public Transform gripPoint;
 
     [Header("Base Stats")]
     [SerializeField] GunStats baseStats;
@@ -23,6 +24,8 @@ public class GunAssembler : MonoBehaviour
 
     public void EquipPart(GunPart part)
     {
+        if (part == null || part.modelPrefab == null) return;
+
         Transform attachPoint = GetAttachPoint(part.partType);
         if (attachPoint == null) return;
 
@@ -34,14 +37,57 @@ public class GunAssembler : MonoBehaviour
 
         // Spawn new model
         GameObject model = Instantiate(part.modelPrefab, attachPoint);
-        model.transform.localPosition = Vector3.zero;
-        model.transform.localRotation = Quaternion.identity;
+
+        // Align part using its own attachment point (e.g., BarrelPoint)
+        Transform partAttachPoint = FindPartAttachPoint(model.transform, part.partType);
+        if (partAttachPoint != null)
+        {
+            // Match rotation then position so the part's attach point lines up to the gun's attach point
+            model.transform.rotation = attachPoint.rotation * Quaternion.Inverse(partAttachPoint.localRotation);
+            Vector3 offset = attachPoint.position - partAttachPoint.position;
+            model.transform.position += offset;
+        }
+        else
+        {
+            model.transform.localPosition = Vector3.zero;
+            model.transform.localRotation = Quaternion.identity;
+        }
 
         currentModels[part.partType] = model;
 
         // Replace part data
         equippedParts.RemoveAll(p => p.partType == part.partType);
         equippedParts.Add(part);
+    }
+
+    private Transform FindPartAttachPoint(Transform partRoot, GunPartType type)
+    {
+        if (partRoot == null) return null;
+
+        string specificName = type switch
+        {
+            GunPartType.Barrel => "BarrelPoint",
+            GunPartType.Stock => "StockPoint",
+            GunPartType.Magazine => "MagazinePoint",
+            GunPartType.Optic => "OpticPoint",
+            GunPartType.Grip => "GripPoint",
+            _ => "AttachPoint"
+        };
+
+        Transform found = partRoot.Find(specificName);
+        if (found != null) return found;
+
+        // Fallbacks
+        found = partRoot.Find("AttachPoint");
+        if (found != null) return found;
+
+        foreach (Transform child in partRoot.GetComponentsInChildren<Transform>(true))
+        {
+            if (child.name == specificName || child.name == "AttachPoint")
+                return child;
+        }
+
+        return null;
     }
 
     Transform GetAttachPoint(GunPartType type)
@@ -51,7 +97,8 @@ public class GunAssembler : MonoBehaviour
             GunPartType.Barrel => barrelPoint,
             GunPartType.Stock => stockPoint,
             GunPartType.Magazine => magazinePoint,
-            GunPartType.Sight => sightPoint,
+            GunPartType.Optic => opticPoint,
+            GunPartType.Grip => gripPoint,
             _ => null
         };
     }
@@ -66,6 +113,8 @@ public class GunAssembler : MonoBehaviour
             finalStats.fireRate += part.fireRateModifier;
             finalStats.recoil += part.recoilModifier;
             finalStats.accuracy += part.accuracyModifier;
+            finalStats.range += part.rangeModifier;
+            finalStats.ammoCapacity += part.ammoCapacityModifier;
         }
 
         return finalStats;
@@ -96,8 +145,10 @@ public class GunAssembler : MonoBehaviour
 
         Debug.Log($"Raycast: from {shootFromPosition}, direction {shootDirection}, range {shootRange}");
 
+        float range = finalStats.range > 0f ? finalStats.range : shootRange;
+
         // Raycast - straight from camera, no spread
-        if (Physics.Raycast(shootFromPosition, shootDirection, out RaycastHit hit, shootRange, layerMask))
+        if (Physics.Raycast(shootFromPosition, shootDirection, out RaycastHit hit, range, layerMask))
         {
             Debug.Log($"Hit: {hit.collider.gameObject.name}");
             Debug.DrawLine(shootFromPosition, hit.point, Color.red, 999999f);
@@ -123,7 +174,7 @@ public class GunAssembler : MonoBehaviour
         else
         {
             Debug.Log("Raycast did not hit anything");
-            Debug.DrawLine(shootFromPosition, shootFromPosition + shootDirection * shootRange, Color.green, 999999f);
+            Debug.DrawLine(shootFromPosition, shootFromPosition + shootDirection * range, Color.green, 999999f);
         }
     }
 }
