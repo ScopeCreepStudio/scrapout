@@ -439,12 +439,12 @@ MonoBehaviour:
   opticPoint: {fileID: 6538186016972270346}
   gripPoint: {fileID: 5583213230364502099}
   baseStats:
-    damage: 1
-    fireRate: 0
-    recoil: 0
-    accuracy: 0
-    range: 0
-    ammoCapacity: 0
+    damage: 15
+    fireRate: 4
+    recoil: 1.2
+    accuracy: 0.9
+    range: 35
+    ammoCapacity: 12
   shootRange: 100
   damageLayer:
     serializedVersion: 2
@@ -466,6 +466,8 @@ MonoBehaviour:
   barrel: {fileID: 11400000, guid: 0113b2f7d3fbeb944884fedf1325213d, type: 2}
   stock: {fileID: 11400000, guid: 7df91b1f92a0173458c2fd34e8173c3b, type: 2}
   magazine: {fileID: 11400000, guid: c2d2e3ac24fbae34ab2ca16678555c0d, type: 2}
+  optic: {fileID: 0}
+  grip: {fileID: 0}
 --- !u!1 &6948384816558205861
 GameObject:
   m_ObjectHideFlags: 0
