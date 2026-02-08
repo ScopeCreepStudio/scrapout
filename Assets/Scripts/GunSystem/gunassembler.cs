@@ -17,11 +17,14 @@ public class GunAssembler : MonoBehaviour
     [SerializeField] float shootRange = 100f;
     [SerializeField] LayerMask damageLayer;
     [SerializeField] GameObject bulletHolePrefab;
+    [SerializeField] AudioSource fireAudio;
+    [SerializeField] ParticleSystem fireVfx;
 
     private Dictionary<GunPartType, GameObject> currentModels = new();
     private List<GunPart> equippedParts = new();
     private float lastShootTime;
     private Transform currentBodyRoot;
+    private Transform firePoint;
 
     public void EquipPart(GunPart part)
     {
@@ -61,6 +64,11 @@ public class GunAssembler : MonoBehaviour
             currentBodyRoot = model.transform;
         }
 
+        if (part.partType == GunPartType.Barrel)
+        {
+            CacheFirePointFromBarrel(model.transform);
+        }
+
         // Replace part data
         equippedParts.RemoveAll(p => p.partType == part.partType);
         equippedParts.Add(part);
@@ -94,6 +102,48 @@ public class GunAssembler : MonoBehaviour
         }
 
         return null;
+    }
+
+    private void CacheFirePointFromBarrel(Transform barrelRoot)
+    {
+        if (barrelRoot == null) return;
+
+        Transform found = barrelRoot.Find("FirePoint");
+        if (found == null)
+        {
+            foreach (Transform child in barrelRoot.GetComponentsInChildren<Transform>(true))
+            {
+                if (child.name == "FirePoint")
+                {
+                    found = child;
+                    break;
+                }
+            }
+        }
+
+        if (found != null)
+        {
+            firePoint = found;
+            if (fireAudio == null)
+                fireAudio = firePoint.GetComponentInChildren<AudioSource>(true);
+            if (fireVfx == null)
+                fireVfx = firePoint.GetComponentInChildren<ParticleSystem>(true);
+
+            if (fireAudio == null)
+                fireAudio = barrelRoot.GetComponentInChildren<AudioSource>(true);
+            if (fireVfx == null)
+                fireVfx = barrelRoot.GetComponentInChildren<ParticleSystem>(true);
+
+            Debug.Log($"FirePoint found on barrel: {firePoint.name}");
+            if (fireAudio == null)
+                Debug.LogWarning("FirePoint found but no AudioSource attached.");
+            if (fireVfx == null)
+                Debug.LogWarning("FirePoint found but no ParticleSystem found in children.");
+        }
+        else
+        {
+            Debug.LogWarning("FirePoint not found on barrel. Expected a child named 'FirePoint'.");
+        }
     }
 
     Transform GetAttachPoint(GunPartType type)
@@ -181,6 +231,31 @@ public class GunAssembler : MonoBehaviour
 
         lastShootTime = Time.time;
 
+        if (firePoint == null || fireVfx == null || fireAudio == null)
+        {
+            TryResolveFireComponents();
+        }
+
+        if (fireVfx != null)
+        {
+            fireVfx.Play(true);
+            Debug.Log($"FireVFX played: {fireVfx.name}");
+        }
+        else
+        {
+            Debug.LogWarning("FireVFX is null on shoot. Check FirePoint ParticleSystem reference.");
+        }
+
+        if (fireAudio != null)
+        {
+            fireAudio.Play();
+            Debug.Log($"FireAudio played: {fireAudio.name}");
+        }
+        else
+        {
+            Debug.LogWarning("FireAudio is null on shoot. Check FirePoint AudioSource reference.");
+        }
+
         // Use all layers if damageLayer is set to Nothing
         int layerMask = damageLayer == 0 ? ~0 : damageLayer;
 
@@ -217,5 +292,70 @@ public class GunAssembler : MonoBehaviour
             Debug.Log("Raycast did not hit anything");
             Debug.DrawLine(shootFromPosition, shootFromPosition + shootDirection * range, Color.green, 999999f);
         }
+    }
+
+    private void TryResolveFireComponents()
+    {
+        Transform barrelRoot = null;
+        if (currentModels.TryGetValue(GunPartType.Barrel, out GameObject barrelModel) && barrelModel != null)
+            barrelRoot = barrelModel.transform;
+
+        if (firePoint == null && barrelRoot != null)
+            CacheFirePointFromBarrel(barrelRoot);
+
+        if (firePoint == null && currentBodyRoot != null)
+            firePoint = FindFirePointRecursive(currentBodyRoot);
+
+        if (firePoint == null)
+            firePoint = FindFirePointRecursive(transform);
+
+        if (firePoint != null)
+        {
+            if (fireAudio == null)
+                fireAudio = firePoint.GetComponentInChildren<AudioSource>(true);
+            if (fireVfx == null)
+                fireVfx = firePoint.GetComponentInChildren<ParticleSystem>(true);
+        }
+
+        if (fireAudio == null)
+        {
+            if (barrelRoot != null)
+                fireAudio = barrelRoot.GetComponentInChildren<AudioSource>(true);
+            if (fireAudio == null && currentBodyRoot != null)
+                fireAudio = currentBodyRoot.GetComponentInChildren<AudioSource>(true);
+            if (fireAudio == null)
+                fireAudio = GetComponentInChildren<AudioSource>(true);
+        }
+
+        if (fireVfx == null)
+        {
+            if (barrelRoot != null)
+                fireVfx = barrelRoot.GetComponentInChildren<ParticleSystem>(true);
+            if (fireVfx == null && currentBodyRoot != null)
+                fireVfx = currentBodyRoot.GetComponentInChildren<ParticleSystem>(true);
+            if (fireVfx == null)
+                fireVfx = GetComponentInChildren<ParticleSystem>(true);
+        }
+
+        if (firePoint == null)
+            Debug.LogWarning("FirePoint not found anywhere in gun hierarchy.");
+        if (fireAudio == null)
+            Debug.LogWarning("FireAudio not found anywhere in gun hierarchy.");
+        if (fireVfx == null)
+            Debug.LogWarning("FireVFX not found anywhere in gun hierarchy.");
+    }
+
+    private Transform FindFirePointRecursive(Transform root)
+    {
+        if (root == null) return null;
+        if (root.name == "FirePoint") return root;
+
+        foreach (Transform child in root.GetComponentsInChildren<Transform>(true))
+        {
+            if (child.name == "FirePoint")
+                return child;
+        }
+
+        return null;
     }
 }

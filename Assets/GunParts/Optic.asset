@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b1565a283fe3884da8dd3e9df9ec38f, type: 3}
   m_Name: Optic
   m_EditorClassIdentifier: 
-  partName: 
+  partName: Default Optic
   partType: 4
-  modelPrefab: {fileID: 0}
+  modelPrefab: {fileID: 4180004626772253722, guid: 7000f82c9c26a2b4d9eae5c87db6b36a, type: 3}
   damageModifier: 0
   fireRateModifier: 0
   recoilModifier: 0

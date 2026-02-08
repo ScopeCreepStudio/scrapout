@@ -13,9 +13,11 @@ MonoBehaviour:
   m_Name: Barrel
   m_EditorClassIdentifier: 
   partName: DefaultBarrel
-  partType: 0
+  partType: 1
   modelPrefab: {fileID: 2864317118520375754, guid: 087c5873eeeeabe459651b1899f1dea5, type: 3}
-  damageModifier: 0
+  damageModifier: 3
   fireRateModifier: 0
   recoilModifier: 0
   accuracyModifier: 0
+  rangeModifier: 15
+  ammoCapacityModifier: 0

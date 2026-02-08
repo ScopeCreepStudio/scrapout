@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4fc17529302a0384695c2d75bf97151f, type: 3}
   m_Name: GunBody
   m_EditorClassIdentifier: 
-  partName: 
+  partName: DefaultGunBody
   partType: 0
-  modelPrefab: {fileID: 0}
+  modelPrefab: {fileID: 461062820596747956, guid: 5cbb6cc1c22bbeb42a27c834c7ec648b, type: 3}
   damageModifier: 0
   fireRateModifier: 0
   recoilModifier: 0

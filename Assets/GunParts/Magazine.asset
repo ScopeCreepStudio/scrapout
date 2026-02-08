@@ -13,9 +13,11 @@ MonoBehaviour:
   m_Name: Magazine
   m_EditorClassIdentifier: 
   partName: DefaultMag
-  partType: 2
+  partType: 3
   modelPrefab: {fileID: 3542112307306508106, guid: d6b9a0e9b6f01a04c83e7309133b04ed, type: 3}
   damageModifier: 0
-  fireRateModifier: 1
+  fireRateModifier: 0
   recoilModifier: 0
   accuracyModifier: 0
+  rangeModifier: 0
+  ammoCapacityModifier: 6

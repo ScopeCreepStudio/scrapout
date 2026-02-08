@@ -44,7 +44,6 @@ GameObject:
   - component: {fileID: 7178408369677797595}
   - component: {fileID: 6583919772935528558}
   - component: {fileID: 7662538576431219581}
-  - component: {fileID: 7555910007337307195}
   m_Layer: 0
   m_Name: GunBody
   m_TagString: Untagged
@@ -61,7 +60,7 @@ Transform:
   m_GameObject: {fileID: 461062820596747956}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.3777982, y: 0.070348024, z: -5.800496}
+  m_LocalPosition: {x: 1.7928859, y: 0.12843251, z: -0.20810366}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -284,7 +283,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 280
+  m_VersionIndex: 283
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -365,28 +364,6 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 461062820596747956}
-  m_Mesh: {fileID: 0}
---- !u!64 &7555910007337307195
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 461062820596747956}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
   m_Mesh: {fileID: 0}
 --- !u!1 &3995805868585882083
 GameObject:

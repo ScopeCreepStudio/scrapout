@@ -44,7 +44,6 @@ GameObject:
   - component: {fileID: 820261312493381046}
   - component: {fileID: 8472667252014667860}
   - component: {fileID: 6532954663702555921}
-  - component: {fileID: 2112718335994142756}
   m_Layer: 0
   m_Name: Optic
   m_TagString: Untagged
@@ -61,7 +60,7 @@ Transform:
   m_GameObject: {fileID: 4180004626772253722}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.1771348, y: 0.15343252, z: 0.024584293}
+  m_LocalPosition: {x: 1.4881781, y: 0.15343246, z: -0.15111583}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -280,7 +279,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 931
+  m_VersionIndex: 934
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -361,26 +360,4 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4180004626772253722}
-  m_Mesh: {fileID: 0}
---- !u!64 &2112718335994142756
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4180004626772253722}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
   m_Mesh: {fileID: 0}

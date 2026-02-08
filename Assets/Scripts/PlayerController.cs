@@ -332,6 +332,14 @@ public class PlayerController : MonoBehaviour
             rb.AddForce(movementDirection.normalized * currentMaxSpeed * 10f * airSpeed, ForceMode.Force);
         }
 
+        // Reduce sliding when no input on ground
+        if (checkGround() && movementDirection.sqrMagnitude <= 0.001f)
+        {
+            Vector3 horizontalVel = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
+            Vector3 damped = Vector3.Lerp(horizontalVel, Vector3.zero, Time.fixedDeltaTime * 12f);
+            rb.linearVelocity = new Vector3(damped.x, rb.linearVelocity.y, damped.z);
+        }
+
         SpeedController(currentMaxSpeed);
     }
 

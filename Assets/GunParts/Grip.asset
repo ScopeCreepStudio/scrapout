@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 857a88e8051c47f44906b3a72456b8b8, type: 3}
   m_Name: Grip
   m_EditorClassIdentifier: 
-  partName: 
+  partName: Default Grip
   partType: 5
-  modelPrefab: {fileID: 0}
+  modelPrefab: {fileID: 2987595050369292268, guid: ca7c357db8ca92649a242dddc0805e61, type: 3}
   damageModifier: 0
   fireRateModifier: 0
-  recoilModifier: 0
-  accuracyModifier: 0
+  recoilModifier: -0.2
+  accuracyModifier: 0.05
   rangeModifier: 0
   ammoCapacityModifier: 0
