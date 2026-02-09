@@ -13,4 +13,5 @@ public abstract class GunPart : ScriptableObject
     public float accuracyModifier;
     public float rangeModifier;
     public int ammoCapacityModifier;
+    public float reloadSpeedModifier;
 }

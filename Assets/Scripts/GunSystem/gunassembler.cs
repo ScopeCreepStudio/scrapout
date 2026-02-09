@@ -1,4 +1,6 @@
 using UnityEngine;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 
 public class GunAssembler : MonoBehaviour
@@ -25,6 +27,19 @@ public class GunAssembler : MonoBehaviour
     private float lastShootTime;
     private Transform currentBodyRoot;
     private Transform firePoint;
+    private int currentAmmo;
+    private bool isReloading;
+    private Coroutine reloadRoutine;
+
+    public event Action<int, int> AmmoChanged;
+    public event Action ReloadStarted;
+    public event Action ReloadFinished;
+    public event Action<Collider> HitConfirmed;
+
+    private void Start()
+    {
+        SetAmmoToMax();
+    }
 
     public void EquipPart(GunPart part)
     {
@@ -72,6 +87,8 @@ public class GunAssembler : MonoBehaviour
         // Replace part data
         equippedParts.RemoveAll(p => p.partType == part.partType);
         equippedParts.Add(part);
+
+        UpdateAmmoCapacity();
     }
 
     private Transform FindPartAttachPoint(Transform partRoot, GunPartType type)
@@ -206,6 +223,7 @@ public class GunAssembler : MonoBehaviour
             finalStats.accuracy += part.accuracyModifier;
             finalStats.range += part.rangeModifier;
             finalStats.ammoCapacity += part.ammoCapacityModifier;
+            finalStats.reloadSpeed += part.reloadSpeedModifier;
         }
 
         return finalStats;
@@ -216,13 +234,35 @@ public class GunAssembler : MonoBehaviour
         return CalculateStats(baseStats);
     }
 
+    public int CurrentAmmo => currentAmmo;
+
+    public int MaxAmmo
+    {
+        get
+        {
+            GunStats stats = CalculateStats(baseStats);
+            return Mathf.Max(1, stats.ammoCapacity);
+        }
+    }
+
     public void Shoot(Vector3 shootFromPosition, Vector3 shootDirection)
     {
         GunStats finalStats = CalculateStats(baseStats);
 
+        if (isReloading)
+        {
+            return;
+        }
+
+        if (currentAmmo <= 0)
+        {
+            Reload();
+            return;
+        }
+
         // Check fire rate
         float timeSinceLastShot = Time.time - lastShootTime;
-        float fireRateCooldown = 1f / finalStats.fireRate;
+        float fireRateCooldown = 1f / Mathf.Max(0.01f, finalStats.fireRate);
         
         if (timeSinceLastShot < fireRateCooldown)
         {
@@ -230,6 +270,8 @@ public class GunAssembler : MonoBehaviour
         }
 
         lastShootTime = Time.time;
+        currentAmmo = Mathf.Max(0, currentAmmo - 1);
+        NotifyAmmoChanged();
 
         if (firePoint == null || fireVfx == null || fireAudio == null)
         {
@@ -268,6 +310,8 @@ public class GunAssembler : MonoBehaviour
         {
             Debug.Log($"Hit: {hit.collider.gameObject.name}");
             Debug.DrawLine(shootFromPosition, hit.point, Color.red, 999999f);
+
+            HitConfirmed?.Invoke(hit.collider);
 
             // Deal damage
             Health health = hit.collider.GetComponent<Health>();
@@ -357,5 +401,57 @@ public class GunAssembler : MonoBehaviour
         }
 
         return null;
+    }
+
+    public void Reload()
+    {
+        if (isReloading) return;
+        if (currentAmmo >= MaxAmmo) return;
+
+        if (reloadRoutine != null)
+            StopCoroutine(reloadRoutine);
+
+        reloadRoutine = StartCoroutine(ReloadRoutine());
+    }
+
+    private IEnumerator ReloadRoutine()
+    {
+        isReloading = true;
+        ReloadStarted?.Invoke();
+
+        float duration = Mathf.Max(0.05f, GetReloadDurationSeconds());
+        yield return new WaitForSeconds(duration);
+
+        currentAmmo = MaxAmmo;
+        NotifyAmmoChanged();
+        isReloading = false;
+        ReloadFinished?.Invoke();
+        reloadRoutine = null;
+    }
+
+    private float GetReloadDurationSeconds()
+    {
+        GunStats stats = CalculateStats(baseStats);
+        return stats.reloadSpeed;
+    }
+
+    private void UpdateAmmoCapacity()
+    {
+        int maxAmmo = MaxAmmo;
+        currentAmmo = Mathf.Clamp(currentAmmo, 0, maxAmmo);
+        if (currentAmmo == 0)
+            currentAmmo = maxAmmo;
+        NotifyAmmoChanged();
+    }
+
+    private void SetAmmoToMax()
+    {
+        currentAmmo = MaxAmmo;
+        NotifyAmmoChanged();
+    }
+
+    private void NotifyAmmoChanged()
+    {
+        AmmoChanged?.Invoke(currentAmmo, MaxAmmo);
     }
 }
