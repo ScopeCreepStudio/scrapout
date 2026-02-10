@@ -16,9 +16,10 @@ MonoBehaviour:
   partType: 0
   modelPrefab: {fileID: 461062820596747956, guid: 5cbb6cc1c22bbeb42a27c834c7ec648b, type: 3}
   damageModifier: 0
-  fireRateModifier: 0
-  recoilModifier: 0
+  fireRateModifier: 4
+  recoilModifier: 2
   accuracyModifier: 0
   rangeModifier: 0
   ammoCapacityModifier: 0
+  reloadSpeedModifier: 1
   bodyType: 0
