@@ -290,8 +290,16 @@ public class GunAssembler : MonoBehaviour
 
         if (fireAudio != null)
         {
-            fireAudio.Play();
-            Debug.Log($"FireAudio played: {fireAudio.name}");
+            if (fireAudio.clip != null)
+            {
+                fireAudio.PlayOneShot(fireAudio.clip);
+                Debug.Log($"FireAudio PlayOneShot: {fireAudio.clip.name}");
+            }
+            else
+            {
+                fireAudio.Play();
+                Debug.Log($"FireAudio played: {fireAudio.name}");
+            }
         }
         else
         {
