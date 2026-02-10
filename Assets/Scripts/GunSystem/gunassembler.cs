@@ -21,6 +21,9 @@ public class GunAssembler : MonoBehaviour
     [SerializeField] GameObject bulletHolePrefab;
     [SerializeField] AudioSource fireAudio;
     [SerializeField] ParticleSystem fireVfx;
+    [SerializeField] TrailRenderer tracerPrefab;
+    [SerializeField] float tracerDuration = 0.05f;
+    [SerializeField] float tracerSpeed = 200f;
 
     private Dictionary<GunPartType, GameObject> currentModels = new();
     private List<GunPart> equippedParts = new();
@@ -313,11 +316,16 @@ public class GunAssembler : MonoBehaviour
 
         float range = finalStats.range > 0f ? finalStats.range : shootRange;
 
+        Vector3 tracerStart = firePoint != null ? firePoint.position : shootFromPosition;
+        Vector3 tracerEnd = shootFromPosition + shootDirection * range;
+
         // Raycast - straight from camera, no spread
         if (Physics.Raycast(shootFromPosition, shootDirection, out RaycastHit hit, range, layerMask))
         {
             Debug.Log($"Hit: {hit.collider.gameObject.name}");
             Debug.DrawLine(shootFromPosition, hit.point, Color.red, 999999f);
+
+            tracerEnd = hit.point;
 
             HitConfirmed?.Invoke(hit.collider);
 
@@ -344,6 +352,41 @@ public class GunAssembler : MonoBehaviour
             Debug.Log("Raycast did not hit anything");
             Debug.DrawLine(shootFromPosition, shootFromPosition + shootDirection * range, Color.green, 999999f);
         }
+
+        SpawnTracer(tracerStart, tracerEnd);
+    }
+
+    private void SpawnTracer(Vector3 start, Vector3 end)
+    {
+        if (tracerPrefab == null) return;
+
+        TrailRenderer tracer = Instantiate(tracerPrefab, start, Quaternion.identity);
+        StartCoroutine(AnimateTracer(tracer, end));
+    }
+
+    private IEnumerator AnimateTracer(TrailRenderer tracer, Vector3 end)
+    {
+        if (tracer == null) yield break;
+
+        Vector3 start = tracer.transform.position;
+        float distance = Vector3.Distance(start, end);
+        float travelTime = Mathf.Max(0.01f, distance / Mathf.Max(1f, tracerSpeed));
+        float time = 0f;
+
+        while (time < travelTime && tracer != null)
+        {
+            time += Time.deltaTime;
+            float t = time / travelTime;
+            tracer.transform.position = Vector3.Lerp(start, end, t);
+            yield return null;
+        }
+
+        if (tracer != null)
+            tracer.transform.position = end;
+
+        yield return new WaitForSeconds(tracerDuration);
+        if (tracer != null)
+            Destroy(tracer.gameObject);
     }
 
     private void TryResolveFireComponents()
