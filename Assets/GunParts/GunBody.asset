@@ -19,7 +19,7 @@ MonoBehaviour:
   fireRateModifier: 4
   recoilModifier: 2
   accuracyModifier: 0
-  rangeModifier: 0
+  rangeModifier: 43.47
   ammoCapacityModifier: 0
   reloadSpeedModifier: 1
   bodyType: 0

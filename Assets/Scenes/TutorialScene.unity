@@ -3465,7 +3465,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d109dc285c3211b4aafa3d4526d557e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 100
+  maxHealth: 999999
   worldCanvas: {fileID: 844255197}
   hitTemplatePrefab: {fileID: 3555536796521744845, guid: 158f277c8b78fb9409b3792f0588cefb, type: 3}
 --- !u!1 &934092606

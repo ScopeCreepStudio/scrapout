@@ -295,6 +295,13 @@ public class PlayerController : MonoBehaviour
         bool isMoving = horizontalInput != 0 || verticalInput != 0;
         if (!isMoving) return;
 
+        if (rb != null)
+        {
+            Vector3 horizontalVel = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
+            if (horizontalVel.magnitude < 0.1f)
+                return;
+        }
+
         float interval = isSprinting ? sprintFootstepInterval : walkFootstepInterval;
         footstepTimer -= Time.deltaTime;
 
