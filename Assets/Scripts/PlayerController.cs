@@ -72,6 +72,7 @@ public class PlayerController : MonoBehaviour
     [Header("KeyBinds")]
     [SerializeField] KeyCode jumpKey = KeyCode.Space;
     [SerializeField] KeyCode sprintKey = KeyCode.LeftShift;
+    [SerializeField] KeyCode reloadKey = KeyCode.R;
 
     //Camera rotation
     float pitch;
@@ -153,6 +154,11 @@ public class PlayerController : MonoBehaviour
         if (Input.GetMouseButton(0))
         {
             gun?.Shoot(cameraHolder.position, cameraHolder.forward);
+        }
+
+        if (Input.GetKeyDown(reloadKey))
+        {
+            gun?.Reload();
         }
 
         //Jumping
