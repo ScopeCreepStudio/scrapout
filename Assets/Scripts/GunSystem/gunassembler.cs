@@ -248,19 +248,19 @@ public class GunAssembler : MonoBehaviour
         }
     }
 
-    public void Shoot(Vector3 shootFromPosition, Vector3 shootDirection)
+    public bool Shoot(Vector3 shootFromPosition, Vector3 shootDirection)
     {
         GunStats finalStats = CalculateStats(baseStats);
 
         if (isReloading)
         {
-            return;
+            return false;
         }
 
         if (currentAmmo <= 0)
         {
             Reload();
-            return;
+            return false;
         }
 
         // Check fire rate
@@ -269,7 +269,7 @@ public class GunAssembler : MonoBehaviour
         
         if (timeSinceLastShot < fireRateCooldown)
         {
-            return;
+            return false;
         }
 
         lastShootTime = Time.time;
@@ -354,6 +354,7 @@ public class GunAssembler : MonoBehaviour
         }
 
         SpawnTracer(tracerStart, tracerEnd);
+        return true;
     }
 
     private void SpawnTracer(Vector3 start, Vector3 end)

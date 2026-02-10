@@ -59,6 +59,13 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float mouseSensitivity = 2f;
     [SerializeField] float cameraPitchLimit = 85f;
 
+    [Header("Recoil")]
+    [SerializeField] float recoilMultiplier = 1f;
+    [SerializeField] float recoilReturnSpeed = 18f;
+    [SerializeField] float recoilReturnDelay = 0.08f;
+    float recoilOffset;
+    float recoilHoldTimer;
+
     [Header("Camera FOV")]
     [SerializeField] float defaultFOV = 60f;
     [SerializeField] float sprintFOV = 70f;
@@ -154,8 +161,14 @@ public class PlayerController : MonoBehaviour
         //Handle shooting
         if (Input.GetMouseButton(0))
         {
-            gun?.Shoot(cameraHolder.position, cameraHolder.forward);
+            if (gun != null && gun.Shoot(cameraHolder.position, cameraHolder.forward))
+            {
+                ApplyRecoilFromGun();
+                recoilHoldTimer = recoilReturnDelay;
+            }
         }
+
+        UpdateRecoilReturn();
 
         if (Input.GetKeyDown(reloadKey))
         {
@@ -202,10 +215,35 @@ public class PlayerController : MonoBehaviour
         pitch = Mathf.Clamp(pitch, -cameraPitchLimit, cameraPitchLimit);
     }
 
+    void ApplyRecoilFromGun()
+    {
+        if (gun == null) return;
+
+        GunStats stats = gun.GetCurrentStats();
+        float recoil = Mathf.Max(0f, stats.recoil) * recoilMultiplier;
+        if (recoil <= 0f) return;
+
+        recoilOffset = Mathf.Clamp(recoilOffset + recoil, 0f, cameraPitchLimit * 2f);
+    }
+
+    void UpdateRecoilReturn()
+    {
+        if (recoilHoldTimer > 0f)
+        {
+            recoilHoldTimer -= Time.deltaTime;
+            return;
+        }
+        if (recoilOffset <= 0f) return;
+        recoilOffset = Mathf.MoveTowards(recoilOffset, 0f, recoilReturnSpeed * Time.deltaTime);
+    }
+
     void LateUpdate()
     {
         if (cameraHolder != null)
-            cameraHolder.localEulerAngles = new Vector3(pitch, 0f, 0f);
+        {
+            float finalPitch = Mathf.Clamp(pitch - recoilOffset, -cameraPitchLimit, cameraPitchLimit);
+            cameraHolder.localEulerAngles = new Vector3(finalPitch, 0f, 0f);
+        }
 
         if (direction != null)
             direction.rotation = Quaternion.Euler(0f, yaw, 0f);
