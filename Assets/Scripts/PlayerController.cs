@@ -86,6 +86,7 @@ public class PlayerController : MonoBehaviour
     Rigidbody rb;
     Vector3 movementDirection;
     bool wasGrounded;
+    Vector3 groundNormal = Vector3.up;
 
     void Start()
     {
@@ -338,7 +339,10 @@ public class PlayerController : MonoBehaviour
 
         if (checkGround())
         {
-            rb.AddForce(movementDirection.normalized * currentMaxSpeed * 10f, ForceMode.Force);
+            Vector3 slopeMove = Vector3.ProjectOnPlane(movementDirection, groundNormal).normalized;
+            if (slopeMove.sqrMagnitude > 0f)
+                rb.AddForce(slopeMove * currentMaxSpeed * 10f, ForceMode.Force);
+            rb.AddForce(Vector3.down * 10f, ForceMode.Force);
         }
         if (!checkGround())
         {
@@ -370,11 +374,14 @@ public class PlayerController : MonoBehaviour
 
     private bool checkGround()
     {
-        if (Physics.Raycast(transform.position, Vector3.down, pHeight, isGround))
+        if (Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit, pHeight, isGround))
         {
+            groundNormal = hit.normal;
             return true;
         }
-        else { return false; }
+
+        groundNormal = Vector3.up;
+        return false;
     }
 
 
