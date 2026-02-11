@@ -86689,27 +86689,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfa04387be1b45a4daede27dffb2aa8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  walkSpeed: 6
+  walkSpeed: 5
   sprintSpeed: 8
-  crouchSpeed: 3
-  groundAcceleration: 35
-  groundFriction: 8
-  airAcceleration: 4
-  airMaxSpeed: 7
-  airControl: 1
-  airSpeedCap: 9
   gravity: -20
   jumpForce: 6
-  crouchHeight: 0.55
-  crouchTransitionSpeed: 16
-  minSlideSpeed: 8
-  slideCooldown: 0.5
-  slideHeight: 1.5
-  slideFriction: 2
-  slideDeceleration: 3
   slideBoostMultiplier: 0.3
+  slideSlopeAcceleration: 2
+  slideSlopeSpeedBonus: 1.2
+  slideJumpBoostMultiplier: 1.1
   mouseSensitivity: 0.1
   cameraPitchLimit: 85
+  fovLerpSpeed: 8
+  fovMinSpeed: 0
+  fovMaxSpeed: 25
+  fovMaxIncrease: 20
   controller: {fileID: 1749240399}
   cameraHolder: {fileID: 224509245}
   virtualCamera: {fileID: 502112678}
