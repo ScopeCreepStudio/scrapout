@@ -41103,7 +41103,8 @@ Transform:
   m_LocalPosition: {x: 22.631979, y: 2.1649957, z: 5.596645}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1749240403}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!43 &1020885696
@@ -54194,17 +54195,9 @@ MonoBehaviour:
   m_Mesh: {fileID: 988291140}
   m_VersionIndex: 5993
   m_IsSelectable: 1
-  m_SelectedFaces: 13000000
-  m_SelectedEdges:
-  - a: 117
-    b: 116
-  - a: 116
-    b: 118
-  - a: 118
-    b: 119
-  - a: 119
-    b: 117
-  m_SelectedVertices: 76000000750000007400000077000000
+  m_SelectedFaces: 
+  m_SelectedEdges: []
+  m_SelectedVertices: 
 --- !u!1 &1149151057
 GameObject:
   m_ObjectHideFlags: 0
@@ -94254,41 +94247,45 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   walkSpeed: 5
   sprintSpeed: 8
-  crouchSpeed: 4
-  groundAcceleration: 35
-  groundFriction: 8
-  airAcceleration: 20
-  airMaxSpeed: 7
-  airControl: 0.4
-  airSpeedCap: 9
   gravity: -20
   jumpForce: 6
-  crouchHeight: 0.55
-  crouchTransitionSpeed: 10
-  minSlideSpeed: 6
-  slideCooldown: 1
-  slideHeight: 1.5
-  slideFriction: 2
-  slideDeceleration: 4
+  groundAcceleration: 35
+  groundFriction: 8
+  groundStickForce: 6
+  sprintAcceleration: 12
+  coyoteTime: 0.12
+  airAcceleration: 20
+  airMaxSpeed: 7
+  crouchSpeed: 3
+  crouchHeight: 1.4
+  crouchTransitionSpeed: 8
   slideBoostMultiplier: 0.3
+  slideSlopeAcceleration: 1
+  slideSlopeSpeedBonus: 0.5
+  slideJumpBoostMultiplier: 1.1
+  slideHeight: 1
+  slideStartSpeed: 8
+  minSlideSpeed: 5
+  slideMaxSlopeAngle: 45
+  slideDeceleration: 3
+  slideUphillDeceleration: 15
+  slideCooldown: 0.5
   mouseSensitivity: 0.1
   cameraPitchLimit: 85
-  defaultFOV: 90
-  sprintFOV: 100
-  slideFOV: 105
-  jumpFOV: 95
-  fovTransitionSpeed: 8
+  turnSpeedThreshold: 240
+  turnSpeedLoss: 0.25
+  fovLerpSpeed: 8
+  fovMinSpeed: 5
+  fovMaxSpeed: 15
+  fovMaxIncrease: 20
   controller: {fileID: 1749240399}
   cameraHolder: {fileID: 224509245}
   virtualCamera: {fileID: 502112678}
-  gun: {fileID: 206937043}
   moveAction: {fileID: -1680190386980627800, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   lookAction: {fileID: -5630151704836100654, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   sprintAction: {fileID: -7471211009204490832, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   jumpAction: {fileID: -2099379676528639254, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   crouchAction: {fileID: 7040659881675835329, guid: 052faaac586de48259a63d0c4782560b, type: 3}
-  fireAction: {fileID: 1120369429361536294, guid: 052faaac586de48259a63d0c4782560b, type: 3}
-  reloadAction: {fileID: -4090225696740746782, guid: 052faaac586de48259a63d0c4782560b, type: 3}
 --- !u!143 &1749240399
 CharacterController:
   m_ObjectHideFlags: 0
@@ -94375,14 +94372,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1749240397}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.9263024, y: 1.0716414, z: 14.155816}
+  m_LocalRotation: {x: 0.0000001821801, y: -0, z: 0, w: 1}
+  m_LocalPosition: {x: -25.55828, y: -1.0933573, z: 8.559172}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 834147223}
   - {fileID: 224509245}
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1015913857}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!43 &1754562241
 Mesh:
@@ -122770,7 +122767,6 @@ SceneRoots:
   - {fileID: 1974294932}
   - {fileID: 702446070}
   - {fileID: 293853143}
-  - {fileID: 1749240403}
   - {fileID: 1015913857}
   - {fileID: 280698379}
   - {fileID: 809409925}
