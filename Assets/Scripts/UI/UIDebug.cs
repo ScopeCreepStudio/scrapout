@@ -6,6 +6,9 @@ public class UIDebug : MonoBehaviour
     [SerializeField] PlayerController player;
     [SerializeField] GunAssembler gun;
     Rigidbody rb;
+    float fpsUpdateTimer;
+    float currentFps;
+    float fpsSmoothing = 0.1f;
 
     void Awake()
     {
@@ -19,6 +22,16 @@ public class UIDebug : MonoBehaviour
             gun = FindObjectOfType<GunAssembler>();
     }
 
+    void Update()
+    {
+        fpsUpdateTimer += Time.unscaledDeltaTime;
+        if (fpsUpdateTimer >= fpsSmoothing)
+        {
+            currentFps = 1f / Mathf.Max(Time.unscaledDeltaTime, 0.0001f);
+            fpsUpdateTimer = 0f;
+        }
+    }
+
     void OnGUI()
     {
         if (player == null) return;
@@ -30,18 +43,19 @@ public class UIDebug : MonoBehaviour
 
         Vector3 velocity = rb != null ? rb.linearVelocity : Vector3.zero;
 
-        GUI.Label(new Rect(10, 10, 400, 20), $"Movement: {movementState}");
-        GUI.Label(new Rect(10, 30, 400, 20), $"Can Jump: {player.CanJump}");
-        GUI.Label(new Rect(10, 50, 400, 20), $"Velocity: {velocity}");
+        GUI.Label(new Rect(10, 10, 400, 20), $"FPS: {currentFps:0}");
+        GUI.Label(new Rect(10, 30, 400, 20), $"Movement: {movementState}");
+        GUI.Label(new Rect(10, 50, 400, 20), $"Can Jump: {player.CanJump}");
+        GUI.Label(new Rect(10, 70, 400, 20), $"Velocity: {velocity}");
 
         if (gun != null)
         {
-            GUI.Label(new Rect(10, 80, 400, 20), "--- Gun Stats ---");
+            GUI.Label(new Rect(10, 100, 400, 20), "--- Gun Stats ---");
 
             GunStats stats = gun.GetCurrentStats();
             FieldInfo[] fields = typeof(GunStats).GetFields(BindingFlags.Public | BindingFlags.Instance);
 
-            float y = 100f;
+            float y = 120f;
             for (int i = 0; i < fields.Length; i++)
             {
                 object value = fields[i].GetValue(stats);
