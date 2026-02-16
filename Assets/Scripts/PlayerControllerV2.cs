@@ -43,6 +43,9 @@ public class PlayerControllerV2 : MonoBehaviour
     [SerializeField] float turnSpeedThreshold = 240f;
     [SerializeField] float turnSpeedLoss = 0.25f;
 
+    [Header("Jump")]
+    [SerializeField] bool holdToJump = true;
+
     [Header("Camera FOV")]
     [SerializeField] float fovLerpSpeed = 8f;
     [SerializeField] float fovMinSpeed = 5f;
@@ -361,8 +364,17 @@ public class PlayerControllerV2 : MonoBehaviour
         if (controller == null) return;
 
         // Buffer jump input so it's not lost if grounding flickers
-        if (Pressed(jumpAction))
-            lastJumpPressTime = Time.time;
+        // Hold to keep the buffer alive (optional)
+        if (holdToJump)
+        {
+            if (Held(jumpAction))
+                lastJumpPressTime = Time.time;
+        }
+        else
+        {
+            if (Pressed(jumpAction))
+                lastJumpPressTime = Time.time;
+        }
 
         bool hasJumpInput = Time.time - lastJumpPressTime < 0.12f;
         bool canJump = frameGrounded || Time.time - lastGroundedTime <= coyoteTime;
