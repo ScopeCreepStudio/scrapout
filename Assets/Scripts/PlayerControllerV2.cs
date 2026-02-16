@@ -46,6 +46,21 @@ public class PlayerControllerV2 : MonoBehaviour
     [Header("Jump")]
     [SerializeField] bool holdToJump = true;
 
+    [Header("Shooting")]
+    [SerializeField] GunAssembler gun;
+
+    [Header("Recoil")]
+    [SerializeField] float recoilPitchKick = 2f;
+    [SerializeField] float recoilReturnSpeed = 18f;
+    [SerializeField] float recoilMaxPitch = 12f;
+
+    [Header("Hover Outline")]
+    [SerializeField] string gunPartTag = "GunPart";
+    [SerializeField] float hoverOutlineDistance = 3f;
+    [SerializeField] LayerMask hoverOutlineMask = ~0;
+    [SerializeField] Color hoverOutlineColor = Color.white;
+    [SerializeField, Range(0f, 10f)] float hoverOutlineWidth = 2f;
+
     [Header("Camera FOV")]
     [SerializeField] float fovLerpSpeed = 8f;
     [SerializeField] float fovMinSpeed = 5f;
@@ -63,6 +78,8 @@ public class PlayerControllerV2 : MonoBehaviour
     [SerializeField] InputActionReference sprintAction;
     [SerializeField] InputActionReference jumpAction;
     [SerializeField] InputActionReference crouchAction;
+    [SerializeField] InputActionReference fireAction;
+    [SerializeField] InputActionReference reloadAction;
 
     // Runtime state
     float pitch, yaw, lastYaw;
@@ -77,6 +94,9 @@ public class PlayerControllerV2 : MonoBehaviour
     float slideEndTime = -1f;
     float slideJumpMinSpeed;
     float lastJumpPressTime = -1f;
+    float recoilOffset;
+    Outline currentOutline;
+    bool currentOutlineAdded;
 
     // Cached per-frame (single raycast shared by all systems)
     bool frameGrounded, frameHasSlope;
@@ -110,6 +130,9 @@ public class PlayerControllerV2 : MonoBehaviour
         if (cameraHolder != null)
             cameraStartPos = cameraHolder.localPosition;
 
+        if (gun == null)
+            gun = GetComponentInChildren<GunAssembler>();
+
         yaw = transform.eulerAngles.y;
         lastYaw = yaw;
         currentMoveMaxSpeed = walkSpeed;
@@ -135,7 +158,7 @@ public class PlayerControllerV2 : MonoBehaviour
 
     void SetActionsEnabled(bool enabled)
     {
-        foreach (var a in new[] { moveAction, lookAction, sprintAction, jumpAction, crouchAction })
+        foreach (var a in new[] { moveAction, lookAction, sprintAction, jumpAction, crouchAction, fireAction, reloadAction })
         {
             if (a == null) continue;
             if (enabled) a.action.Enable(); else a.action.Disable();
@@ -146,6 +169,8 @@ public class PlayerControllerV2 : MonoBehaviour
     {
         justJumped = false;
         CacheFrameState();
+        HandleHoverOutline();
+        HandleShooting();
         HandleMouseLook();
         HandleJump();
         HandleSlide();
@@ -216,6 +241,11 @@ public class PlayerControllerV2 : MonoBehaviour
         yaw += look.x * mouseSensitivity;
         pitch = Mathf.Clamp(pitch - look.y * mouseSensitivity, -cameraPitchLimit, cameraPitchLimit);
 
+        if (recoilOffset != 0f)
+            recoilOffset = Mathf.MoveTowards(recoilOffset, 0f, recoilReturnSpeed * Time.deltaTime);
+
+        float finalPitch = Mathf.Clamp(pitch + recoilOffset, -cameraPitchLimit, cameraPitchLimit);
+
         // Turn momentum loss (ground only — preserve air momentum)
         if (frameGrounded && horizontalVelocity.sqrMagnitude > 0.001f)
         {
@@ -230,7 +260,81 @@ public class PlayerControllerV2 : MonoBehaviour
 
         transform.rotation = Quaternion.Euler(0f, yaw, 0f);
         if (cameraHolder != null)
-            cameraHolder.localEulerAngles = new Vector3(pitch, 0f, 0f);
+            cameraHolder.localEulerAngles = new Vector3(finalPitch, 0f, 0f);
+    }
+
+    // ───────── Shooting & Recoil ─────────
+
+    void HandleShooting()
+    {
+        if (gun == null) return;
+
+        if (Held(fireAction))
+        {
+            Transform origin = cameraHolder != null ? cameraHolder : transform;
+            if (gun.Shoot(origin.position, origin.forward))
+                ApplyRecoil();
+        }
+
+        if (Pressed(reloadAction))
+            gun.Reload();
+    }
+
+    void ApplyRecoil()
+    {
+        if (recoilPitchKick <= 0f) return;
+        recoilOffset = Mathf.Max(recoilOffset - recoilPitchKick, -Mathf.Abs(recoilMaxPitch));
+    }
+
+    // ───────── Hover Outline ─────────
+
+    void HandleHoverOutline()
+    {
+        Transform origin = cameraHolder != null ? cameraHolder : transform;
+        if (!Physics.Raycast(origin.position, origin.forward, out RaycastHit hit, hoverOutlineDistance, hoverOutlineMask, QueryTriggerInteraction.Collide))
+        {
+            ClearCurrentOutline();
+            return;
+        }
+
+        if (!hit.collider.CompareTag(gunPartTag))
+        {
+            ClearCurrentOutline();
+            return;
+        }
+
+        Outline outline = hit.collider.GetComponentInParent<Outline>();
+        bool added = false;
+        if (outline == null)
+        {
+            outline = hit.collider.gameObject.AddComponent<Outline>();
+            added = true;
+        }
+
+        if (outline != currentOutline)
+        {
+            ClearCurrentOutline();
+            currentOutline = outline;
+            currentOutlineAdded = added;
+        }
+
+        currentOutline.OutlineMode = Outline.Mode.OutlineAll;
+        currentOutline.OutlineColor = hoverOutlineColor;
+        currentOutline.OutlineWidth = hoverOutlineWidth;
+        currentOutline.enabled = true;
+    }
+
+    void ClearCurrentOutline()
+    {
+        if (currentOutline == null) return;
+
+        if (currentOutlineAdded)
+            Destroy(currentOutline);
+        else
+            currentOutline.enabled = false;
+
+        currentOutline = null;
+        currentOutlineAdded = false;
     }
 
     // ───────── Movement ─────────

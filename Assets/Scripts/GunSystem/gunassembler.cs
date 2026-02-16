@@ -19,6 +19,9 @@ public class GunAssembler : MonoBehaviour
     [SerializeField] float shootRange = 100f;
     [SerializeField] LayerMask damageLayer;
     [SerializeField] GameObject bulletHolePrefab;
+    [SerializeField] float bulletHoleOffset = 0.01f;
+    [SerializeField, Range(1, 200)] int maxBulletHoles = 50;
+    [SerializeField] Transform bulletHoleParent;
     [SerializeField] AudioSource fireAudio;
     [SerializeField] ParticleSystem fireVfx;
     [SerializeField] TrailRenderer tracerPrefab;
@@ -27,6 +30,7 @@ public class GunAssembler : MonoBehaviour
 
     private Dictionary<GunPartType, GameObject> currentModels = new();
     private List<GunPart> equippedParts = new();
+    private readonly Queue<GameObject> bulletHolePool = new();
     private float lastShootTime;
     private Transform currentBodyRoot;
     private Transform firePoint;
@@ -42,6 +46,7 @@ public class GunAssembler : MonoBehaviour
     private void Start()
     {
         SetAmmoToMax();
+        ResolveBulletHoleParent();
     }
 
     public void EquipPart(GunPart part)
@@ -248,19 +253,19 @@ public class GunAssembler : MonoBehaviour
         }
     }
 
-    public void Shoot(Vector3 shootFromPosition, Vector3 shootDirection)
+    public bool Shoot(Vector3 shootFromPosition, Vector3 shootDirection)
     {
         GunStats finalStats = CalculateStats(baseStats);
 
         if (isReloading)
         {
-            return;
+            return false;
         }
 
         if (currentAmmo <= 0)
         {
             Reload();
-            return;
+            return false;
         }
 
         // Check fire rate
@@ -269,7 +274,7 @@ public class GunAssembler : MonoBehaviour
         
         if (timeSinceLastShot < fireRateCooldown)
         {
-            return;
+            return false;
         }
 
         lastShootTime = Time.time;
@@ -344,7 +349,8 @@ public class GunAssembler : MonoBehaviour
             // Spawn bullet hole
             if (bulletHolePrefab != null)
             {
-                Instantiate(bulletHolePrefab, hit.point, Quaternion.LookRotation(hit.normal));
+                Vector3 holePos = hit.point + hit.normal * bulletHoleOffset;
+                SpawnBulletHole(holePos, Quaternion.LookRotation(hit.normal));
             }
         }
         else
@@ -354,6 +360,7 @@ public class GunAssembler : MonoBehaviour
         }
 
         SpawnTracer(tracerStart, tracerEnd);
+        return true;
     }
 
     private void SpawnTracer(Vector3 start, Vector3 end)
@@ -504,5 +511,41 @@ public class GunAssembler : MonoBehaviour
     private void NotifyAmmoChanged()
     {
         AmmoChanged?.Invoke(currentAmmo, MaxAmmo);
+    }
+
+    private void ResolveBulletHoleParent()
+    {
+        if (bulletHoleParent != null) return;
+        GameObject found = GameObject.Find("bulletholepooling");
+        if (found != null)
+            bulletHoleParent = found.transform;
+    }
+
+    private void SpawnBulletHole(Vector3 position, Quaternion rotation)
+    {
+        if (bulletHolePrefab == null) return;
+
+        int poolLimit = Mathf.Max(1, maxBulletHoles);
+        GameObject hole = null;
+
+        if (bulletHolePool.Count >= poolLimit)
+        {
+            // Reuse the oldest still-alive entry
+            while (bulletHolePool.Count > 0 && hole == null)
+                hole = bulletHolePool.Dequeue();
+        }
+
+        if (hole == null)
+            hole = Instantiate(bulletHolePrefab);
+
+        if (bulletHoleParent == null)
+            ResolveBulletHoleParent();
+
+        if (bulletHoleParent != null)
+            hole.transform.SetParent(bulletHoleParent, true);
+
+        hole.transform.SetPositionAndRotation(position, rotation);
+        hole.SetActive(true);
+        bulletHolePool.Enqueue(hole);
     }
 }

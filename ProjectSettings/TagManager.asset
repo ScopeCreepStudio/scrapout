@@ -12,6 +12,7 @@ TagManager:
   - Water
   - Wood
   - Enemy
+  - GunPart
   layers:
   - Default
   - TransparentFX
