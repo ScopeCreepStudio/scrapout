@@ -3,36 +3,47 @@ using UnityEngine;
 
 public class UIDebug : MonoBehaviour
 {
-    [SerializeField] PlayerController player;
+    [SerializeField] GameObject playerObject;
+    PlayerControllerV2 player;
     [SerializeField] GunAssembler gun;
-    Rigidbody rb;
 
     void Awake()
     {
-        if (player == null)
-            player = FindObjectOfType<PlayerController>();
-
-        if (player != null)
-            rb = player.GetComponent<Rigidbody>();
+        ResolvePlayer();
 
         if (gun == null)
             gun = FindObjectOfType<GunAssembler>();
+    }
+
+    void OnValidate()
+    {
+        ResolvePlayer();
+    }
+
+    void ResolvePlayer()
+    {
+        if (playerObject != null)
+            player = playerObject.GetComponent<PlayerControllerV2>();
+
+        if (player == null)
+        {
+            player = FindObjectOfType<PlayerControllerV2>();
+            if (player != null)
+                playerObject = player.gameObject;
+        }
     }
 
     void OnGUI()
     {
         if (player == null) return;
 
-        string movementState = "standing";
-        if (player.isSliding) movementState = "sliding";
-        else if (player.isCrouching) movementState = "crouching";
-        else if (player.isSprinting) movementState = "sprinting";
+        string movementState = "Standing";
+        if (player.IsSliding) movementState = "Sliding";
+        else if (player.IsSprinting) movementState = "Sprinting";
+        else if (player.IsCrouching) movementState = "Crouching";
 
-        Vector3 velocity = rb != null ? rb.linearVelocity : Vector3.zero;
-
-        GUI.Label(new Rect(10, 10, 400, 20), $"Movement: {movementState}");
-        GUI.Label(new Rect(10, 30, 400, 20), $"Can Jump: {player.CanJump}");
-        GUI.Label(new Rect(10, 50, 400, 20), $"Velocity: {velocity}");
+        GUI.Label(new Rect(10, 10, 400, 20), $"Current Movement: {movementState}");
+        GUI.Label(new Rect(10, 30, 400, 20), $"Movement Speed: {player.MovementSpeed:F2}");
 
         if (gun != null)
         {
