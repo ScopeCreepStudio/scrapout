@@ -47,12 +47,12 @@ public class UIDebug : MonoBehaviour
 
         if (gun != null)
         {
-            GUI.Label(new Rect(10, 80, 400, 20), "--- Gun Stats ---");
+            GUI.Label(new Rect(10, 100, 400, 20), "--- Gun Stats ---");
 
             GunStats stats = gun.GetCurrentStats();
             FieldInfo[] fields = typeof(GunStats).GetFields(BindingFlags.Public | BindingFlags.Instance);
 
-            float y = 100f;
+            float y = 120f;
             for (int i = 0; i < fields.Length; i++)
             {
                 object value = fields[i].GetValue(stats);

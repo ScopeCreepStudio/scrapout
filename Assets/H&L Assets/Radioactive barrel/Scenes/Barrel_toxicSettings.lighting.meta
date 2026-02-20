@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 5bc5b0daf49a2734291a610d2119734f
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 4890085278179872738
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 343454
+  packageName: Radioactive barrel
+  packageVersion: 1.0
+  assetPath: Assets/H&L Assets/Radioactive barrel/Scenes/Barrel_toxicSettings.lighting
+  uploadId: 815068

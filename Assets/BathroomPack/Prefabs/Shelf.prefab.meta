@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 8149a178bc578f54daa640232d92bc07
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 120069
+  packageName: Mini Bathroom Pack
+  packageVersion: 1.0
+  assetPath: Assets/BathroomPack/Prefabs/Shelf.prefab
+  uploadId: 249527

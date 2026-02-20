@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: f446e278ae54d6547a83978d757417ae
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 120069
+  packageName: Mini Bathroom Pack
+  packageVersion: 1.0
+  assetPath: Assets/BathroomPack/Materials/Toilet.mat
+  uploadId: 249527
