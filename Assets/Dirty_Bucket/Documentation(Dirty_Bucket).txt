@@ -1,0 +1,60 @@
+	
+- - - - - - - - - - - - - - - - - - - - - Dirty Bucket 3D (Low-poly) - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+This pack contains 3d Worm bucket low-poly model with Animated small worms.Pack comes
+with many unique texture variations. You can use this Asset commercially and non-commercially.This model is optmized for using in pc, mobile and AR games.
+
+Note: This asset works on Built in, URP And HDRP render pipelines.
+
+
+Technical Details:-
+		- Model(s) : Worm's Bucket, Worm(Animated)
+		- Polygon count : 9636 (Bucket & Static Worms), 1376 (single Animated worm)
+		- Unwrapped : Yes
+		- Animations : 3 (Walk, Look, Anim_1)
+		- Texture Variations : 6(Bucket), 2(Worm)
+		- Prefabs : 10
+		- Used Material(s) : Unity Standard Material
+		- Texture maps : Albedo/Base Color, Metalic, Normal (2048 x 2048)
+		
+		
+
+Features:-
+	- Many skin variation's of Bucket
+	- Fully customizable model
+	- Worms with 3 Animation
+	- Simple scripts attached (Controls Animation of Worm's)
+	- Animated and Non-Animated Worms models included
+	- Lowpoly design
+	- 2K Textures
+	- Optimized for Pc, Mobile and AR
+	- Easy to use(Drag and drop the prefab to your scene)
+	- Mesh Colliders attached
+	- Easy to modify Position & Rotation of Worms, Mud, Bucket Handle.etc
+	- 3 Unique prefab variations included
+	
+Folder details:-
+
+	Materials : Where the materials for the model located.
+	
+	Meshes : Contain FBX format of the 3d model.
+	
+	Textures : Contains Textures, that are in (.PNG) file format
+	
+	(Other folders - Prefabs, Scenes)
+
+
+
+How to use:-
+	
+	Simply drag and drop the prefab to your scene and use it.
+	(Prefab(s) located under 
+	Asset >  Worms_Bucket > Prefabs).
+
+..................................................................................
+
+About Me : "SR Studios Kerala", Indie Game developer & 2D-3D Artist from Alappuzha, Kerala, India
+contact : srstudioskerala@gmail.com
+ 
+
+................Thank you for downloading this package................................

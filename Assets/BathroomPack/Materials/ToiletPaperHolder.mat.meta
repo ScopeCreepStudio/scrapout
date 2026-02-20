@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 532b6026fa1a5f748801226add832e64
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 120069
+  packageName: Mini Bathroom Pack
+  packageVersion: 1.0
+  assetPath: Assets/BathroomPack/Materials/ToiletPaperHolder.mat
+  uploadId: 249527

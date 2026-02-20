@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: e610c6c5d127a504bb8ad692f3d9bc77
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 252860
+  packageName: Dirty Bucket(low-poly)
+  packageVersion: 1.0
+  assetPath: Assets/Dirty_Bucket/Scripts/worm_anim.cs
+  uploadId: 590928

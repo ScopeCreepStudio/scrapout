@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: a82400405d8348948a5528c449617460
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 343454
+  packageName: Radioactive barrel
+  packageVersion: 1.0
+  assetPath: Assets/H&L Assets/Radioactive barrel/HDRP/Materials/Barrel_toxic_01.mat
+  uploadId: 815068

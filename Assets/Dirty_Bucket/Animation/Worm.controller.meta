@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 0e4ccc07153a9b743b9ffb6a762ef308
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 9100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 252860
+  packageName: Dirty Bucket(low-poly)
+  packageVersion: 1.0
+  assetPath: Assets/Dirty_Bucket/Animation/Worm.controller
+  uploadId: 590928

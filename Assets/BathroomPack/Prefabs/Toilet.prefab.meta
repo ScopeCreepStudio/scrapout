@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: fcf33ec5356e5264a93d7b3ebc620838
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 120069
+  packageName: Mini Bathroom Pack
+  packageVersion: 1.0
+  assetPath: Assets/BathroomPack/Prefabs/Toilet.prefab
+  uploadId: 249527

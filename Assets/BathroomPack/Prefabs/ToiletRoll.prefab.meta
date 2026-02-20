@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: b4565462db6db384ca38c2736c28e0e4
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 120069
+  packageName: Mini Bathroom Pack
+  packageVersion: 1.0
+  assetPath: Assets/BathroomPack/Prefabs/ToiletRoll.prefab
+  uploadId: 249527
