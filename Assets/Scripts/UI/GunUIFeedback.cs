@@ -16,6 +16,12 @@ public class GunUIFeedback : MonoBehaviour
     [SerializeField] private GameObject hitmarker;
     [SerializeField] private string enemyTag = "Enemy";
     [SerializeField] private LayerMask enemyLayer;
+    [SerializeField] private Health playerHealth;
+    [SerializeField] private TextMeshProUGUI healthText;
+    [SerializeField] private Image[] healthSegments;
+    [SerializeField] private Gradient healthGradient;
+    [SerializeField] private float healthSegmentValue = 10f;
+    [SerializeField] private float healthLerpSpeed = 8f;
 
     [Header("Speedometer")]
     [SerializeField] private float speedometerMaxSpeed = 12f;
@@ -37,6 +43,7 @@ public class GunUIFeedback : MonoBehaviour
     private Coroutine hitmarkerRoutine;
     private float currentNeedleAngle;
     private Vector3[] speedometerBaseLocalPos;
+    private float displayedHealth;
 
     private void Awake()
     {
@@ -45,6 +52,12 @@ public class GunUIFeedback : MonoBehaviour
 
         if (player == null)
             player = FindObjectOfType<PlayerControllerV2>();
+
+        if (playerHealth == null && player != null)
+            playerHealth = player.GetComponent<Health>();
+
+        if (playerHealth != null)
+            displayedHealth = playerHealth.GetHealth();
 
         if (hitmarker != null)
         {
@@ -94,6 +107,7 @@ public class GunUIFeedback : MonoBehaviour
     private void Update()
     {
         UpdateSpeedUI();
+        UpdateHealthUI();
     }
 
     private void HandleAmmoChanged(int current, int max)
@@ -122,6 +136,41 @@ public class GunUIFeedback : MonoBehaviour
 
         UpdateSpeedometerColor(t);
         UpdateSpeedometerShake(t);
+    }
+
+    private void UpdateHealthUI()
+    {
+        if (playerHealth == null || healthSegments == null || healthSegments.Length == 0)
+            return;
+
+        float maxHealth = Mathf.Max(0.01f, playerHealth.GetMaxHealth());
+        float currentHealth = Mathf.Clamp(playerHealth.GetHealth(), 0f, maxHealth);
+        displayedHealth = Mathf.Lerp(displayedHealth, currentHealth, Time.deltaTime * healthLerpSpeed);
+        displayedHealth = Mathf.Clamp(displayedHealth, 0f, maxHealth);
+        float normalized = displayedHealth / maxHealth;
+
+        if (healthText != null)
+            healthText.text = Mathf.CeilToInt(displayedHealth) + " / " + Mathf.CeilToInt(maxHealth);
+
+        float segmentValue = healthSegmentValue > 0f
+            ? healthSegmentValue
+            : maxHealth / Mathf.Max(1, healthSegments.Length);
+
+        Color segmentColor = healthGradient != null
+            ? healthGradient.Evaluate(normalized)
+            : Color.Lerp(Color.red, Color.white, normalized);
+
+        for (int i = 0; i < healthSegments.Length; i++)
+        {
+            Image segment = healthSegments[i];
+            if (segment == null) continue;
+
+            float segmentStart = maxHealth - (i + 1) * segmentValue;
+            float segmentEnd = maxHealth - i * segmentValue;
+            float fill = Mathf.InverseLerp(segmentStart, segmentEnd, displayedHealth);
+            segment.fillAmount = Mathf.Clamp01(fill);
+            segment.color = segmentColor;
+        }
     }
 
     private void UpdateSpeedometerColor(float normalizedSpeed)
