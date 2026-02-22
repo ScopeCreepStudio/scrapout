@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 99b5cf7aa94d64943b73e4d3f6d7cd85
+timeCreated: 1496582257
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 92191
+  packageName: Arcade Machine Free
+  packageVersion: 1.0
+  assetPath: Assets/Arcade_machine/Prefab/Arcade_machine.prefab
+  uploadId: 183452
