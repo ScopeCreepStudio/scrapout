@@ -80,6 +80,7 @@ public class PlayerControllerV2 : MonoBehaviour
     [SerializeField] InputActionReference crouchAction;
     [SerializeField] InputActionReference fireAction;
     [SerializeField] InputActionReference reloadAction;
+    [SerializeField] InputActionReference adsAction;
 
     // Runtime state
     float pitch, yaw, lastYaw;
@@ -107,6 +108,8 @@ public class PlayerControllerV2 : MonoBehaviour
     public bool IsSprinting { get; private set; }
     public bool IsCrouching => isCrouching;
     public bool IsSliding => isSliding;
+    public bool IsGrounded => frameGrounded;
+    public InputActionReference AdsAction => adsAction;
 
     void Start()
     {
@@ -158,7 +161,7 @@ public class PlayerControllerV2 : MonoBehaviour
 
     void SetActionsEnabled(bool enabled)
     {
-        foreach (var a in new[] { moveAction, lookAction, sprintAction, jumpAction, crouchAction, fireAction, reloadAction })
+        foreach (var a in new[] { moveAction, lookAction, sprintAction, jumpAction, crouchAction, fireAction, reloadAction, adsAction })
         {
             if (a == null) continue;
             if (enabled) a.action.Enable(); else a.action.Disable();
@@ -582,6 +585,14 @@ public class PlayerControllerV2 : MonoBehaviour
 
         float speedT = Mathf.InverseLerp(fovMinSpeed, fovMaxSpeed, movementSpeed);
         float target = baseFov + fovMaxIncrease * speedT;
+
+        // Apply ADS zoom if available
+        GunAnimationController gunAnimController = gun.GetComponent<GunAnimationController>();
+        if (gunAnimController != null)
+        {
+            target -= gunAnimController.CurrentAdsFov;
+        }
+
         virtualCamera.Lens.FieldOfView = Mathf.Lerp(virtualCamera.Lens.FieldOfView, target, Time.deltaTime * fovLerpSpeed);
     }
 

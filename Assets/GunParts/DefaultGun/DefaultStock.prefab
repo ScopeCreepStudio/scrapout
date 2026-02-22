@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8433476772429624774}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: StockPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -42,7 +42,7 @@ GameObject:
   - component: {fileID: 3523898103438548944}
   - component: {fileID: 580954650991660912}
   - component: {fileID: 6458594894014534445}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: DefaultStock
   m_TagString: Untagged
   m_Icon: {fileID: 0}

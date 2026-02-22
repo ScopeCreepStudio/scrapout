@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1733577168993503403}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: OpticPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -40,7 +40,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6664917830600020160}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: StockPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -71,7 +71,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4497848015443838253}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: GripPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -102,7 +102,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3373272309428033519}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: BarrelPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -135,7 +135,7 @@ GameObject:
   - component: {fileID: 1504269101327579264}
   - component: {fileID: 7265917409349754054}
   - component: {fileID: 3642667690157955551}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: DefaultBody
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -224,7 +224,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1683906157033108305}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: MagazinePoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
