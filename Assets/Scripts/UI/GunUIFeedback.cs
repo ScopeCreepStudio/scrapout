@@ -20,6 +20,8 @@ public class GunUIFeedback : MonoBehaviour
     [SerializeField] private TextMeshProUGUI healthText;
     [SerializeField] private Image[] healthSegments;
     [SerializeField] private Gradient healthGradient;
+    [SerializeField] private float healthSegmentValue = 10f;
+    [SerializeField] private float healthLerpSpeed = 8f;
     [SerializeField] private AudioClip hitmarkerSound;
 
     [Header("Hitmarker Audio")]
