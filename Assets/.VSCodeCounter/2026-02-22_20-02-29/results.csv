@@ -1,0 +1,55 @@
+"filename", "language", "C#", "ShaderLab", "HLSL", "JSON", "comment", "blank", "total"
+"g:\ScrapItOut\scrapout\Assets\Dirty_Bucket\Scripts\worm_anim.cs", "C#", 21, 0, 0, 0, 2, 6, 29
+"g:\ScrapItOut\scrapout\Assets\Junkyard models\Shaders\MobileDiffuseDoubleSided.shader", "ShaderLab", 0, 23, 0, 0, 4, 7, 34
+"g:\ScrapItOut\scrapout\Assets\Junkyard models\Shaders\UnlitTranparentDoubleSided.shader", "ShaderLab", 0, 16, 0, 0, 4, 5, 25
+"g:\ScrapItOut\scrapout\Assets\QuickOutline\Resources\Shaders\OutlineFill.shader", "ShaderLab", 0, 58, 0, 0, 7, 17, 82
+"g:\ScrapItOut\scrapout\Assets\QuickOutline\Resources\Shaders\OutlineMask.shader", "ShaderLab", 0, 22, 0, 0, 7, 5, 34
+"g:\ScrapItOut\scrapout\Assets\QuickOutline\Scripts\Outline.cs", "C#", 193, 0, 0, 0, 39, 78, 310
+"g:\ScrapItOut\scrapout\Assets\Scripts\AmbienceManager.cs", "C#", 29, 0, 0, 0, 0, 7, 36
+"g:\ScrapItOut\scrapout\Assets\Scripts\AudioManager.cs", "C#", 93, 0, 0, 0, 1, 16, 110
+"g:\ScrapItOut\scrapout\Assets\Scripts\DamagePopup.cs", "C#", 65, 0, 0, 0, 2, 14, 81
+"g:\ScrapItOut\scrapout\Assets\Scripts\FaceCamera.cs", "C#", 24, 0, 0, 0, 2, 6, 32
+"g:\ScrapItOut\scrapout\Assets\Scripts\GunSystem\GunAnimationController.cs", "C#", 298, 0, 0, 0, 35, 65, 398
+"g:\ScrapItOut\scrapout\Assets\Scripts\GunSystem\GunBodyType.cs", "C#", 4, 0, 0, 0, 0, 0, 4
+"g:\ScrapItOut\scrapout\Assets\Scripts\GunSystem\GunPartType.cs", "C#", 9, 0, 0, 0, 0, 1, 10
+"g:\ScrapItOut\scrapout\Assets\Scripts\GunSystem\GunParts\Barrel.cs", "C#", 9, 0, 0, 0, 0, 2, 11
+"g:\ScrapItOut\scrapout\Assets\Scripts\GunSystem\GunParts\Grip.cs", "C#", 9, 0, 0, 0, 0, 1, 10
+"g:\ScrapItOut\scrapout\Assets\Scripts\GunSystem\GunParts\GunBody.cs", "C#", 11, 0, 0, 0, 0, 2, 13
+"g:\ScrapItOut\scrapout\Assets\Scripts\GunSystem\GunParts\GunPart.cs", "C#", 15, 0, 0, 0, 0, 3, 18
+"g:\ScrapItOut\scrapout\Assets\Scripts\GunSystem\GunParts\Magazine.cs", "C#", 9, 0, 0, 0, 0, 2, 11
+"g:\ScrapItOut\scrapout\Assets\Scripts\GunSystem\GunParts\Optic.cs", "C#", 9, 0, 0, 0, 0, 1, 10
+"g:\ScrapItOut\scrapout\Assets\Scripts\GunSystem\GunParts\Stock.cs", "C#", 9, 0, 0, 0, 0, 1, 10
+"g:\ScrapItOut\scrapout\Assets\Scripts\GunSystem\GunStats.cs", "C#", 12, 0, 0, 0, 0, 2, 14
+"g:\ScrapItOut\scrapout\Assets\Scripts\GunSystem\GunTest.cs", "C#", 21, 0, 0, 0, 0, 4, 25
+"g:\ScrapItOut\scrapout\Assets\Scripts\GunSystem\Inventory\GunPartInventory.cs", "C#", 61, 0, 0, 0, 0, 13, 74
+"g:\ScrapItOut\scrapout\Assets\Scripts\GunSystem\Inventory\GunPartPickup.cs", "C#", 36, 0, 0, 0, 0, 7, 43
+"g:\ScrapItOut\scrapout\Assets\Scripts\GunSystem\Inventory\PlayerGunLoadout.cs", "C#", 61, 0, 0, 0, 0, 16, 77
+"g:\ScrapItOut\scrapout\Assets\Scripts\GunSystem\gunassembler.cs", "C#", 447, 0, 0, 0, 13, 100, 560
+"g:\ScrapItOut\scrapout\Assets\Scripts\Health.cs", "C#", 54, 0, 0, 0, 1, 13, 68
+"g:\ScrapItOut\scrapout\Assets\Scripts\PlayerControllerV2.cs", "C#", 501, 0, 0, 0, 29, 116, 646
+"g:\ScrapItOut\scrapout\Assets\Scripts\SimpleProjectile.cs", "C#", 50, 0, 0, 0, 0, 13, 63
+"g:\ScrapItOut\scrapout\Assets\Scripts\TimedProjectileShooter.cs", "C#", 30, 0, 0, 0, 0, 7, 37
+"g:\ScrapItOut\scrapout\Assets\Scripts\UI\GunUIFeedback.cs", "C#", 218, 0, 0, 0, 0, 50, 268
+"g:\ScrapItOut\scrapout\Assets\Scripts\UI\MainMenu\MainMenuController.cs", "C#", 177, 0, 0, 0, 22, 44, 243
+"g:\ScrapItOut\scrapout\Assets\Scripts\UI\UIDebug.cs", "C#", 52, 0, 0, 0, 0, 14, 66
+"g:\ScrapItOut\scrapout\Assets\TextMesh Pro\Shaders\SDFFunctions.hlsl", "HLSL", 0, 0, 130, 0, 18, 31, 179
+"g:\ScrapItOut\scrapout\Assets\TextMesh Pro\Shaders\TMP_Bitmap-Custom-Atlas.shader", "ShaderLab", 0, 113, 0, 0, 2, 31, 146
+"g:\ScrapItOut\scrapout\Assets\TextMesh Pro\Shaders\TMP_Bitmap-Mobile.shader", "ShaderLab", 0, 123, 0, 0, 3, 30, 156
+"g:\ScrapItOut\scrapout\Assets\TextMesh Pro\Shaders\TMP_Bitmap.shader", "ShaderLab", 0, 113, 0, 0, 2, 31, 146
+"g:\ScrapItOut\scrapout\Assets\TextMesh Pro\Shaders\TMP_SDF Overlay.shader", "ShaderLab", 0, 253, 0, 0, 4, 70, 327
+"g:\ScrapItOut\scrapout\Assets\TextMesh Pro\Shaders\TMP_SDF SSD.shader", "ShaderLab", 0, 253, 0, 0, 4, 65, 322
+"g:\ScrapItOut\scrapout\Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Masking.shader", "ShaderLab", 0, 198, 0, 0, 10, 51, 259
+"g:\ScrapItOut\scrapout\Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Overlay.shader", "ShaderLab", 0, 193, 0, 0, 8, 52, 253
+"g:\ScrapItOut\scrapout\Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile SSD.shader", "ShaderLab", 0, 82, 0, 0, 4, 21, 107
+"g:\ScrapItOut\scrapout\Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile-2-Pass.shader", "ShaderLab", 0, 290, 0, 0, 15, 85, 390
+"g:\ScrapItOut\scrapout\Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile.shader", "ShaderLab", 0, 192, 0, 0, 8, 51, 251
+"g:\ScrapItOut\scrapout\Assets\TextMesh Pro\Shaders\TMP_SDF-Surface-Mobile.shader", "ShaderLab", 0, 104, 0, 0, 8, 28, 140
+"g:\ScrapItOut\scrapout\Assets\TextMesh Pro\Shaders\TMP_SDF-Surface.shader", "ShaderLab", 0, 123, 0, 0, 4, 33, 160
+"g:\ScrapItOut\scrapout\Assets\TextMesh Pro\Shaders\TMP_SDF.shader", "ShaderLab", 0, 253, 0, 0, 4, 70, 327
+"g:\ScrapItOut\scrapout\Assets\TextMesh Pro\Shaders\TMP_Sprite.shader", "ShaderLab", 0, 111, 0, 0, 0, 21, 132
+"g:\ScrapItOut\scrapout\Assets\TextMesh Pro\Shaders\TMPro.cginc", "HLSL", 0, 0, 63, 0, 2, 20, 85
+"g:\ScrapItOut\scrapout\Assets\TextMesh Pro\Shaders\TMPro_Mobile.cginc", "HLSL", 0, 0, 129, 0, 2, 35, 166
+"g:\ScrapItOut\scrapout\Assets\TextMesh Pro\Shaders\TMPro_Properties.cginc", "HLSL", 0, 0, 62, 0, 6, 13, 81
+"g:\ScrapItOut\scrapout\Assets\TextMesh Pro\Shaders\TMPro_Surface.cginc", "HLSL", 0, 0, 75, 0, 7, 18, 100
+"g:\ScrapItOut\scrapout\Assets\TextMesh Pro\Sprites\EmojiOne.json", "JSON", 0, 0, 0, 155, 0, 2, 157
+"Total", "-", 2527, 2520, 459, 155, 279, 1396, 7336
