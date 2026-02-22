@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1182167598334768212}
   - component: {fileID: 6651313131085255433}
   - component: {fileID: 6614578474839532010}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: DefaultBarrel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -97,7 +97,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5114736966486054184}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: BarrelPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -131,7 +131,7 @@ GameObject:
   - component: {fileID: 5402938229779491003}
   - component: {fileID: 8970792877069126650}
   - component: {fileID: 3826799905192937365}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: FirePoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}

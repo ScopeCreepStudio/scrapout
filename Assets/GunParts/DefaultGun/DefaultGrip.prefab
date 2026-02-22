@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5438556884137884198}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: GripPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -42,7 +42,7 @@ GameObject:
   - component: {fileID: 2819862341556851684}
   - component: {fileID: 5228298056266959245}
   - component: {fileID: 1293307503921578491}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: DefaultGrip
   m_TagString: Untagged
   m_Icon: {fileID: 0}
