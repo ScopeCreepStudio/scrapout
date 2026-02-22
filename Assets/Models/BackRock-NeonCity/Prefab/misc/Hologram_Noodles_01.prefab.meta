@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 99e09e7755daf7346a907df1e8ca4d33
+timeCreated: 1523507213
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 298393
+  packageName: Neon Capital City - Low Poly Urban Environment
+  packageVersion: 1.0
+  assetPath: Assets/Models/BackRock-NeonCity/Prefab/misc/Hologram_Noodles_01.prefab
+  uploadId: 706025

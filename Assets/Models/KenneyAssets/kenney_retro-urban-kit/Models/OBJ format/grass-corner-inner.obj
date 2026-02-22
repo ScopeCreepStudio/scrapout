@@ -1,0 +1,35 @@
+# Created by Kenney (www.kenney.nl)
+
+mtllib grass-corner-inner.mtl
+
+g grass-corner-inner
+
+v 0.5 0.5 -0.5 1 1 1
+v 0.5 0.5 0.5 1 1 1
+v -0.5 0.5 0.5 1 1 1
+v -0.5 0 -0.5 1 1 1
+
+vn -0.2270461 0.9470481 -0.2270461
+vn 0 1 0
+vn -0.4082483 0.8164966 -0.4082483
+
+vt -1 -8.604228E-15
+vt -1 1
+vt -1.110223E-16 1
+vt -1.110223E-16 -8.604228E-15
+
+usemtl grass
+
+f 3/3/1 2/2/2 1/1/1
+f 3/3/1 1/1/1 4/4/3
+
+g grass-corner-inner
+
+
+
+
+usemtl grass
+
+f 3/3/1 2/2/2 1/1/1
+f 3/3/1 1/1/1 4/4/3
+
