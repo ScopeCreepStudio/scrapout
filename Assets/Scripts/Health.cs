@@ -40,7 +40,6 @@ public class Health : MonoBehaviour
         Vector3 spawnPos = transform.position + Vector3.up * 0.5f;
         GameObject damageNumberGO = Instantiate(hitTemplatePrefab, worldCanvas.transform);
         damageNumberGO.transform.position = spawnPos;
-        damageNumberGO.transform.localPosition = new Vector3(1f, 0f, 0f);
 
         DamagePopup damageNumber = damageNumberGO.GetComponent<DamagePopup>();
         if (damageNumber != null)

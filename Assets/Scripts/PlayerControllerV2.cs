@@ -365,7 +365,18 @@ public class PlayerControllerV2 : MonoBehaviour
             verticalVelocity = -groundStickForce;
         verticalVelocity += gravity * Time.deltaTime;
 
-        controller.Move((horizontalVelocity + Vector3.up * verticalVelocity) * Time.deltaTime);
+        CollisionFlags flags = controller.Move((horizontalVelocity + Vector3.up * verticalVelocity) * Time.deltaTime);
+
+        // Cancel horizontal velocity component pointing into the wall to prevent sticking
+        if ((flags & CollisionFlags.Sides) != 0)
+        {
+            Vector3 flatVel = horizontalVelocity;
+            flatVel.y = 0f;
+            // Project out the component pushing into the wall by checking the move direction
+            Vector3 moveDir = flatVel.normalized;
+            // Keep only the velocity that isn't heading into a blocked direction
+            horizontalVelocity = Vector3.ProjectOnPlane(horizontalVelocity, moveDir);
+        }
     }
 
     void UpdateSlideMovement()
@@ -568,6 +579,7 @@ public class PlayerControllerV2 : MonoBehaviour
 
         float t = Time.deltaTime * crouchTransitionSpeed;
         controller.height = Mathf.Lerp(controller.height, targetHeight, t);
+        controller.center = new Vector3(0f, controller.height / 2f, 0f);
 
         Vector3 camTarget = cameraStartPos;
         camTarget.y -= cameraDrop;

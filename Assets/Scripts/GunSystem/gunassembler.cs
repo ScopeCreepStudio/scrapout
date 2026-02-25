@@ -47,6 +47,10 @@ public class GunAssembler : MonoBehaviour
     {
         SetAmmoToMax();
         ResolveBulletHoleParent();
+        TryResolveFireComponents();
+
+        // Warm up the physics engine so the first raycast does not cause a spike
+        Physics.Raycast(transform.position, Vector3.down, 0.001f);
     }
 
     public void EquipPart(GunPart part)
