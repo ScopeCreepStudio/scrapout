@@ -24,6 +24,15 @@ public class PlayerControllerV2 : MonoBehaviour
     [SerializeField] float crouchHeight = 1.4f;
     [SerializeField] float crouchTransitionSpeed = 8f;
 
+    [Header("Wall Running")]
+    [SerializeField] float wallRunGravity = -5f;
+    [SerializeField] float wallRunForce = 12f;
+    [SerializeField] float wallDetectionDistance = 0.7f;
+    [SerializeField] float wallJumpForce = 8f;
+    [SerializeField] float wallJumpSideForce = 6f;
+    [SerializeField] float wallRunMinHeight = 1.2f;
+    [SerializeField] LayerMask wallMask = ~0;
+
     [Header("Sliding")]
     [SerializeField] float slideBoostMultiplier = 0.3f;
     [SerializeField] float slideSlopeAcceleration = 1f;
@@ -81,6 +90,8 @@ public class PlayerControllerV2 : MonoBehaviour
     [SerializeField] InputActionReference fireAction;
     [SerializeField] InputActionReference reloadAction;
 
+
+
     // Runtime state
     float pitch, yaw, lastYaw;
     float verticalVelocity, movementSpeed;
@@ -97,6 +108,10 @@ public class PlayerControllerV2 : MonoBehaviour
     float recoilOffset;
     Outline currentOutline;
     bool currentOutlineAdded;
+
+    bool isWallRunning;
+    Vector3 wallNormal;
+    float wallRunStartTime;
 
     // Cached per-frame (single raycast shared by all systems)
     bool frameGrounded, frameHasSlope;
@@ -175,6 +190,7 @@ public class PlayerControllerV2 : MonoBehaviour
         HandleJump();
         HandleSlide();
         HandleCrouch();
+        HandleWallRun();
         HandleMovement();
         UpdateHeightAndCamera();
         HandleCameraFov();
@@ -467,6 +483,20 @@ public class PlayerControllerV2 : MonoBehaviour
     {
         if (controller == null) return;
 
+        // Wall Jump, Overrides default jump when on wall.
+        if (isWallRunning && (holdToJump ? Held(jumpAction) : Pressed(jumpAction)))
+        {
+            isWallRunning = false;
+
+            verticalVelocity = wallJumpForce;
+
+            Vector3 jumpDir = wallNormal + Vector3.up;
+            horizontalVelocity = jumpDir.normalized * wallJumpSideForce;
+
+            justJumped = true;
+            return;
+        }
+
         // Buffer jump input so it's not lost if grounding flickers
         // Hold to keep the buffer alive (optional)
         if (holdToJump)
@@ -548,6 +578,72 @@ public class PlayerControllerV2 : MonoBehaviour
             isCrouching = false;
         else if (crouchHeld && !isSliding)
             isCrouching = true;
+    }
+
+    // ───────── WallRunning/Jumping ─────────
+
+    bool CheckForWall(out Vector3 normal)
+    {
+        normal = Vector3.zero;
+
+        Vector3 origin = transform.position + Vector3.up * 1f;
+
+        if (Physics.Raycast(origin, transform.right, out RaycastHit rightHit, wallDetectionDistance, wallMask))
+        {
+            normal = rightHit.normal;
+            return true;
+        }
+
+        if (Physics.Raycast(origin, -transform.right, out RaycastHit leftHit, wallDetectionDistance, wallMask))
+        {
+            normal = leftHit.normal;
+            return true;
+        }
+
+        return false;
+    }
+
+    void HandleWallRun()
+    {
+        if (frameGrounded)
+        {
+            StopWallRun();
+            return;
+        }
+
+        if (verticalVelocity < 0f && transform.position.y > wallRunMinHeight)
+        {
+            if (CheckForWall(out Vector3 detectedNormal))
+            {
+                if (!isWallRunning)
+                {
+                    isWallRunning = true;
+                    wallRunStartTime = Time.time;
+                }
+
+                wallNormal = detectedNormal;
+
+                
+                verticalVelocity = wallRunGravity;
+
+                
+                Vector3 wallForward = Vector3.Cross(wallNormal, Vector3.up);
+
+                
+                if (Vector3.Dot(wallForward, transform.forward) < 0f)
+                    wallForward = -wallForward;
+
+                horizontalVelocity = wallForward * wallRunForce;
+                return;
+            }
+        }
+
+        StopWallRun();
+    }
+
+    void StopWallRun()
+    {
+        isWallRunning = false;
     }
 
     // ───────── Height & Camera (single source of truth) ─────────
