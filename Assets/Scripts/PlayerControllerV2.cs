@@ -30,7 +30,6 @@ public class PlayerControllerV2 : MonoBehaviour
     [SerializeField] float wallDetectionDistance = 0.7f;
     [SerializeField] float wallJumpForce = 8f;
     [SerializeField] float wallJumpSideForce = 6f;
-    [SerializeField] float wallRunMinHeight = 1.2f;
     [SerializeField] LayerMask wallMask = ~0;
 
     [Header("Sliding")]
@@ -484,14 +483,19 @@ public class PlayerControllerV2 : MonoBehaviour
         if (controller == null) return;
 
         // Wall Jump, Overrides default jump when on wall.
-        if (isWallRunning && (holdToJump ? Held(jumpAction) : Pressed(jumpAction)))
+        if (isWallRunning && Pressed(jumpAction))
         {
             isWallRunning = false;
 
             verticalVelocity = wallJumpForce;
 
-            Vector3 jumpDir = wallNormal + Vector3.up;
-            horizontalVelocity = jumpDir.normalized * wallJumpSideForce;
+            Vector3 pushDir = wallNormal + Vector3.up * 0.5f;
+
+            float speed = horizontalVelocity.magnitude;
+
+            horizontalVelocity =
+                (pushDir.normalized * wallJumpSideForce) +
+                (transform.forward * speed);
 
             justJumped = true;
             return;
@@ -605,40 +609,54 @@ public class PlayerControllerV2 : MonoBehaviour
 
     void HandleWallRun()
     {
+        // Stop if grounded
         if (frameGrounded)
         {
             StopWallRun();
             return;
         }
 
-        if (verticalVelocity < 0f && transform.position.y > wallRunMinHeight)
+        // If already wallrunning, just validate the wall still exists
+        if (isWallRunning)
+        {
+            if (!CheckForWall(out Vector3 detectedNormal))
+            {
+                StopWallRun();
+                return;
+            }
+
+            wallNormal = detectedNormal;
+
+            // Reduced gravity while running
+            verticalVelocity = wallRunGravity;
+
+            // Move along wall using current speed
+            Vector3 wallForward = Vector3.Cross(wallNormal, Vector3.up);
+
+            if (Vector3.Dot(wallForward, transform.forward) < 0f)
+                wallForward = -wallForward;
+
+            float currentSpeed = horizontalVelocity.magnitude;
+            float minWallSpeed = walkSpeed;
+
+            horizontalVelocity = wallForward.normalized * Mathf.Max(currentSpeed, minWallSpeed);
+
+            return;
+        }
+
+        // START wallrun (must press or hold jump while airborne)
+        if (!frameGrounded && Held(jumpAction))
         {
             if (CheckForWall(out Vector3 detectedNormal))
             {
-                if (!isWallRunning)
+                if (verticalVelocity <= 0f)
                 {
                     isWallRunning = true;
+                    wallNormal = detectedNormal;
                     wallRunStartTime = Time.time;
                 }
-
-                wallNormal = detectedNormal;
-
-                
-                verticalVelocity = wallRunGravity;
-
-                
-                Vector3 wallForward = Vector3.Cross(wallNormal, Vector3.up);
-
-                
-                if (Vector3.Dot(wallForward, transform.forward) < 0f)
-                    wallForward = -wallForward;
-
-                horizontalVelocity = wallForward * wallRunForce;
-                return;
             }
         }
-
-        StopWallRun();
     }
 
     void StopWallRun()
