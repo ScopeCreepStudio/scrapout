@@ -26,7 +26,6 @@ public class PlayerControllerV2 : MonoBehaviour
 
     [Header("Wall Running")]
     [SerializeField] float wallRunGravity = -5f;
-    [SerializeField] float wallRunForce = 12f;
     [SerializeField] float wallDetectionDistance = 0.7f;
     [SerializeField] float wallJumpForce = 8f;
     [SerializeField] float wallJumpSideForce = 6f;
@@ -100,7 +99,7 @@ public class PlayerControllerV2 : MonoBehaviour
     float lastSlopeAngle, lastSlopeTime;
     Vector3 horizontalVelocity, cameraStartPos;
     Vector3 slideDirection, lastSlopeDir;
-    bool isCrouching, isSliding, justJumped;
+    bool isCrouching, isSliding, justJumped, isWallRunning;
     float slideEndTime = -1f;
     float slideJumpMinSpeed;
     float lastJumpPressTime = -1f;
@@ -108,7 +107,7 @@ public class PlayerControllerV2 : MonoBehaviour
     Outline currentOutline;
     bool currentOutlineAdded;
 
-    bool isWallRunning;
+    
     Vector3 wallNormal;
     float wallRunStartTime;
 
@@ -121,6 +120,8 @@ public class PlayerControllerV2 : MonoBehaviour
     public bool IsSprinting { get; private set; }
     public bool IsCrouching => isCrouching;
     public bool IsSliding => isSliding;
+
+    public bool IsWallRunning => isWallRunning;
 
     void Start()
     {

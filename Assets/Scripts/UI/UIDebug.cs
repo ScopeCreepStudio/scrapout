@@ -39,6 +39,7 @@ public class UIDebug : MonoBehaviour
 
         string movementState = "Standing";
         if (player.IsSliding) movementState = "Sliding";
+        else if (player.IsWallRunning) movementState = "Wall Running";
         else if (player.IsSprinting) movementState = "Sprinting";
         else if (player.IsCrouching) movementState = "Crouching";
 

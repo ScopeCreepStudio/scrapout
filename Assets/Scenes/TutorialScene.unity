@@ -170163,12 +170163,10 @@ MonoBehaviour:
   crouchSpeed: 3
   crouchHeight: 1.4
   crouchTransitionSpeed: 8
-  wallRunGravity: -1
-  wallRunForce: 12
+  wallRunGravity: -0.5
   wallDetectionDistance: 0.7
-  wallJumpForce: 8
+  wallJumpForce: 6
   wallJumpSideForce: 6
-  wallRunMinHeight: 1.2
   wallMask:
     serializedVersion: 2
     m_Bits: 4294967295
