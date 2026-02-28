@@ -489,13 +489,21 @@ public class PlayerControllerV2 : MonoBehaviour
 
             verticalVelocity = wallJumpForce;
 
-            Vector3 pushDir = wallNormal + Vector3.up * 0.5f;
+            float currentSpeed = horizontalVelocity.magnitude;
 
-            float speed = horizontalVelocity.magnitude;
+            // Direction away from wall + slight upward bias
+            Vector3 pushDir = (wallNormal + Vector3.up * 0.5f).normalized;
 
-            horizontalVelocity =
-                (pushDir.normalized * wallJumpSideForce) +
-                (transform.forward * speed);
+            // Preserve forward momentum without stacking the extra speed.
+            Vector3 preservedMomentum = horizontalVelocity;
+            Vector3 newVelocity = preservedMomentum + pushDir * wallJumpSideForce;
+
+            float maxAllowedSpeed = Mathf.Max(currentMoveMaxSpeed, airMaxSpeed) * 1.1f;
+
+            if (newVelocity.magnitude > maxAllowedSpeed)
+                newVelocity = newVelocity.normalized * maxAllowedSpeed;
+
+            horizontalVelocity = newVelocity;
 
             justJumped = true;
             return;
@@ -616,7 +624,7 @@ public class PlayerControllerV2 : MonoBehaviour
             return;
         }
 
-        // If already wallrunning, just validate the wall still exists
+        // If already wallrunning, just make sure the wall still exists
         if (isWallRunning)
         {
             if (!CheckForWall(out Vector3 detectedNormal))
@@ -627,10 +635,9 @@ public class PlayerControllerV2 : MonoBehaviour
 
             wallNormal = detectedNormal;
 
-            // Reduced gravity while running
             verticalVelocity = wallRunGravity;
 
-            // Move along wall using current speed
+            
             Vector3 wallForward = Vector3.Cross(wallNormal, Vector3.up);
 
             if (Vector3.Dot(wallForward, transform.forward) < 0f)
