@@ -1,9 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-/// <summary>
 /// Trigger zone that applies a status effect to entities that enter it
-/// </summary>
 public class StatusEffectZone : MonoBehaviour
 {
     [SerializeField] private StatusEffect statusEffect;
@@ -43,9 +41,13 @@ public class StatusEffectZone : MonoBehaviour
 
     private void OnTriggerEnter(Collider collision)
     {
+        Debug.Log($"Trigger entered by: {collision.gameObject.name}");
+
         if (statusEffect == null) return;
 
-        StatusEffectManager effectManager = collision.GetComponent<StatusEffectManager>();
+        // Use GetComponentInParent so the manager is found even if the
+        // collider that entered is a child of the player root GameObject
+        StatusEffectManager effectManager = collision.GetComponentInParent<StatusEffectManager>();
         if (effectManager == null) return;
 
         if (applyWhileMoving && !IsMoving(collision))
@@ -82,7 +84,9 @@ public class StatusEffectZone : MonoBehaviour
         if (!applyWhileMoving) return;
         if (statusEffect == null) return;
 
-        StatusEffectManager effectManager = collision.GetComponent<StatusEffectManager>();
+        // Use GetComponentInParent so the manager is found even if the
+        // collider that entered is a child of the player root GameObject
+        StatusEffectManager effectManager = collision.GetComponentInParent<StatusEffectManager>();
         if (effectManager == null) return;
 
         if (!IsMoving(collision)) return;

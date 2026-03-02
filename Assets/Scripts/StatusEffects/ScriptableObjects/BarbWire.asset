@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f15429bff309b794198b613f556df489, type: 3}
   m_Name: BarbWire
   m_EditorClassIdentifier: 
-  effectName: Status Effect
+  effectName: Barbed Wire
   description: Describes what this status effect does
   icon: {fileID: 21300000, guid: 32821a1b956bc9c41a04e29b2ad8861a, type: 3}
   duration: 1

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6ccd41eeb61afd48966a960c5487834, type: 3}
   m_Name: Burning
   m_EditorClassIdentifier: 
-  effectName: Status Effect
+  effectName: Burning
   description: Describes what this status effect does
   icon: {fileID: 0}
   duration: 5

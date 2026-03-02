@@ -112,6 +112,9 @@ public class PlayerControllerV2 : MonoBehaviour
     public bool IsGrounded => frameGrounded;
     public InputActionReference AdsAction => adsAction;
 
+    // Set by status effects (pitch, yaw) in degrees — applied each frame in HandleMouseLook
+    public Vector2 ShakeOffset { get; set; }
+
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
@@ -265,9 +268,9 @@ public class PlayerControllerV2 : MonoBehaviour
         }
         lastYaw = yaw;
 
-        transform.rotation = Quaternion.Euler(0f, yaw, 0f);
+        transform.rotation = Quaternion.Euler(0f, yaw + ShakeOffset.y, 0f);
         if (cameraHolder != null)
-            cameraHolder.localEulerAngles = new Vector3(finalPitch, 0f, 0f);
+            cameraHolder.localEulerAngles = new Vector3(finalPitch + ShakeOffset.x, 0f, 0f);
     }
 
     // ───────── Shooting & Recoil ─────────
@@ -348,6 +351,7 @@ public class PlayerControllerV2 : MonoBehaviour
 
     void HandleMovement()
     {
+
         if (controller == null) return;
 
         if (frameGrounded)
@@ -355,7 +359,6 @@ public class PlayerControllerV2 : MonoBehaviour
             lastGroundedTime = Time.time;
             if (verticalVelocity <= 0f) slideJumpMinSpeed = 0f; // clear on landing
         }
-
         Vector2 input = ReadVec2(moveAction);
         bool hasMoveInput = input.sqrMagnitude > 0.01f;
         bool forwardOnly = input.y > 0.1f && Mathf.Abs(input.x) < 0.1f;
