@@ -14,19 +14,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   effectName: Electrocuted
   description: Describes what this status effect does
-  icon: {fileID: 0}
-  duration: 5
+  icon: {fileID: 21300000, guid: 0f4cb4821375ea14eb90883b26ff567a, type: 3}
+  duration: 1
   isInfinite: 0
   overlayColor: {r: 1, g: 1, b: 1, a: 0.2}
   overlayIntensity: 0.3
   overlaySprite: {fileID: 0}
   useOverlaySprite: 0
-  applySFX: {fileID: 0}
+  applySFX: {fileID: 8300000, guid: 55814ef5b51997348b4b58dfafbc69b3, type: 3}
   loopingSFX: {fileID: 0}
   volume: 1
-  damagePerSecond: 1
-  causesMovementImpairment: 0
-  movementSpeedMultiplier: 1
+  damagePerSecond: 10
+  causesMovementImpairment: 1
+  movementSpeedMultiplier: 0
   tickRate: 0.3
   cameraShakeIntensity: 0.4
   cameraShakeSpeed: 30
