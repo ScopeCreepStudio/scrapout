@@ -41,7 +41,6 @@ public class StatusEffectZone : MonoBehaviour
 
     private void OnTriggerEnter(Collider collision)
     {
-        Debug.Log($"Trigger entered by: {collision.gameObject.name}");
 
         if (statusEffect == null) return;
 

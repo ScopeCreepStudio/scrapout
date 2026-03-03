@@ -351,7 +351,6 @@ public class PlayerControllerV2 : MonoBehaviour
 
     void HandleMovement()
     {
-
         if (controller == null) return;
 
         if (frameGrounded)
@@ -359,6 +358,20 @@ public class PlayerControllerV2 : MonoBehaviour
             lastGroundedTime = Time.time;
             if (verticalVelocity <= 0f) slideJumpMinSpeed = 0f; // clear on landing
         }
+
+        // If fully stunned (movementSpeedMultiplier == 0), kill velocity and skip movement
+        if (IsStunned())
+        {
+            horizontalVelocity = Vector3.zero;
+            isSliding = false;
+            movementSpeed = 0f;
+            if (frameGrounded && verticalVelocity < 0f)
+                verticalVelocity = -groundStickForce;
+            verticalVelocity += gravity * Time.deltaTime;
+            controller.Move(Vector3.up * verticalVelocity * Time.deltaTime);
+            return;
+        }
+
         Vector2 input = ReadVec2(moveAction);
         bool hasMoveInput = input.sqrMagnitude > 0.01f;
         bool forwardOnly = input.y > 0.1f && Mathf.Abs(input.x) < 0.1f;
@@ -603,8 +616,12 @@ public class PlayerControllerV2 : MonoBehaviour
         }
 
         // Apply status effect FOV modifier (slowness usually means reduced FOV)
-        float fovMultiplier = GetMovementSpeedMultiplier();
-        target *= fovMultiplier;
+        // Skip when fully stunned — a stun shouldn't collapse the FOV
+        if (!IsStunned())
+        {
+            float fovMultiplier = GetMovementSpeedMultiplier();
+            target *= fovMultiplier;
+        }
 
         virtualCamera.Lens.FieldOfView = Mathf.Lerp(virtualCamera.Lens.FieldOfView, target, Time.deltaTime * fovLerpSpeed);
     }
@@ -628,6 +645,20 @@ public class PlayerControllerV2 : MonoBehaviour
         }
 
         return slowest;
+    }
+
+    bool IsStunned()
+    {
+        if (statusEffectManager == null) return false;
+
+        var activeEffects = statusEffectManager.GetActiveEffects();
+        foreach (var effect in activeEffects.Values)
+        {
+            if (effect.statusEffect.causesMovementImpairment &&
+                effect.statusEffect.movementSpeedMultiplier <= 0f)
+                return true;
+        }
+        return false;
     }
 
     static readonly Collider[] standUpBuffer = new Collider[8];
