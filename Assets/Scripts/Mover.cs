@@ -27,7 +27,6 @@ public class Mover : MonoBehaviour
                 speed * Time.deltaTime
             );
 
-            // stop moving once we've reached the desired position
             if (fence.transform.localPosition == targetPosition)
             {
                 moveFence = false;
@@ -40,7 +39,6 @@ public class Mover : MonoBehaviour
 
         if (other.CompareTag("Player"))
         {
-            StopAllCoroutines();
             StartCoroutine(MoveFence());
         }
     }
