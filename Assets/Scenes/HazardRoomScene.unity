@@ -4353,7 +4353,13 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 839395905479756216, guid: 47a55ff4b4b269e4dabddb8c84f2bf79, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1777411679}
+    - targetCorrespondingSourceObject: {fileID: 839395905479756216, guid: 47a55ff4b4b269e4dabddb8c84f2bf79, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1777411680}
   m_SourcePrefab: {fileID: 100100000, guid: 47a55ff4b4b269e4dabddb8c84f2bf79, type: 3}
 --- !u!1001 &781011602
 PrefabInstance:
@@ -9344,6 +9350,52 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e22fad9e70ae94d42885f95bddd898ce, type: 3}
+--- !u!1 &1777411675 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 839395905479756216, guid: 47a55ff4b4b269e4dabddb8c84f2bf79, type: 3}
+  m_PrefabInstance: {fileID: 778608764}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1777411679
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1777411675}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac234c53cf1ad6549aaaf798df2c7b15, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  statusEffect: {fileID: 11400000, guid: 81e668d96f84c304798cb5b9af3aab26, type: 2}
+  reapplicationCooldown: 1
+  destroyAfterApply: 0
+  applyOnEnter: 1
+  applyWhileMoving: 0
+  minMoveSpeed: 0.1
+--- !u!136 &1777411680
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1777411675}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 3.4
+  m_Height: 20.4
+  m_Direction: 2
+  m_Center: {x: 0.0000012844685, y: 0.000014965422, z: 7.500001}
 --- !u!1001 &1794029831
 PrefabInstance:
   m_ObjectHideFlags: 0
