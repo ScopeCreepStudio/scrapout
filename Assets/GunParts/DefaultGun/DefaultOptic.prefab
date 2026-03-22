@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8564640156617274357}
   - component: {fileID: 2619792817709443940}
   - component: {fileID: 6302487910125213212}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: DefaultOptic
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -96,7 +96,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6418100733442311252}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: OpticPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
