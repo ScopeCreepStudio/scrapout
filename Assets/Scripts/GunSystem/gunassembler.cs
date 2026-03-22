@@ -41,7 +41,7 @@ public class GunAssembler : MonoBehaviour
     public event Action<int, int> AmmoChanged;
     public event Action ReloadStarted;
     public event Action ReloadFinished;
-    public event Action<Collider> HitConfirmed;
+    public event Action<Collider, RaycastHit> HitConfirmed;
 
     private void Start()
     {
@@ -332,7 +332,7 @@ public class GunAssembler : MonoBehaviour
 
             tracerEnd = hit.point;
 
-            HitConfirmed?.Invoke(hit.collider);
+            HitConfirmed?.Invoke(hit.collider, hit);
 
             // Deal damage
             Health health = hit.collider.GetComponent<Health>();

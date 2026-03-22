@@ -166,7 +166,7 @@ public class GunAnimationController : MonoBehaviour
         }
     }
 
-    private void OnShoot(Collider hitCollider)
+    private void OnShoot(Collider hitCollider, RaycastHit hit)
     {
         TriggerRecoil();
     }

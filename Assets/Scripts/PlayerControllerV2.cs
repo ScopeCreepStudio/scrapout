@@ -87,6 +87,7 @@ public class PlayerControllerV2 : MonoBehaviour
     [SerializeField] CharacterController controller;
     [SerializeField] Transform cameraHolder;
     [SerializeField] CinemachineCamera virtualCamera;
+    [SerializeField] StatusEffectManager statusEffectManager;
 
     [Header("Input Actions")]
     [SerializeField] InputActionReference moveAction;
@@ -149,6 +150,9 @@ public class PlayerControllerV2 : MonoBehaviour
             controller = GetComponent<CharacterController>();
         if (controller != null)
             controllerStartHeight = controller.height;
+
+        if (statusEffectManager == null)
+            statusEffectManager = GetComponent<StatusEffectManager>();
 
         SetupCameraHolder();
 
@@ -461,7 +465,9 @@ public class PlayerControllerV2 : MonoBehaviour
 
     void UpdateNormalMovement(float h, float v, bool hasMoveInput)
     {
+        float speedMultiplier = GetMovementSpeedMultiplier();
         float target = IsSprinting ? sprintSpeed : (isCrouching ? crouchSpeed : walkSpeed);
+        target *= speedMultiplier;
         currentMoveMaxSpeed = Mathf.MoveTowards(currentMoveMaxSpeed, target, sprintAcceleration * Time.deltaTime);
 
         Vector3 wishDir = transform.forward * v + transform.right * h;
@@ -785,10 +791,33 @@ public class PlayerControllerV2 : MonoBehaviour
             target -= gunAnimController.CurrentAdsFov;
         }
 
+        // Apply status effect FOV modifier (slowness usually means reduced FOV)
+        float fovMultiplier = GetMovementSpeedMultiplier();
+        target *= fovMultiplier;
+
         virtualCamera.Lens.FieldOfView = Mathf.Lerp(virtualCamera.Lens.FieldOfView, target, Time.deltaTime * fovLerpSpeed);
     }
 
     // ───────── Helpers ─────────
+
+    float GetMovementSpeedMultiplier()
+    {
+        if (statusEffectManager == null) return 1f;
+
+        var activeEffects = statusEffectManager.GetActiveEffects();
+        if (activeEffects.Count == 0) return 1f;
+
+        float slowest = 1f;
+        foreach (var effect in activeEffects.Values)
+        {
+            if (effect.statusEffect.causesMovementImpairment)
+            {
+                slowest = Mathf.Min(slowest, effect.statusEffect.movementSpeedMultiplier);
+            }
+        }
+
+        return slowest;
+    }
 
     static readonly Collider[] standUpBuffer = new Collider[8];
 

@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Health : MonoBehaviour
 {
@@ -6,6 +7,9 @@ public class Health : MonoBehaviour
     [SerializeField] Canvas worldCanvas;
     [SerializeField] GameObject hitTemplatePrefab;
     float currentHealth;
+
+    // Event fired when damage is taken
+    public UnityEvent<float, float> OnDamageTaken = new UnityEvent<float, float>();
 
     void Start()
     {
@@ -21,11 +25,19 @@ public class Health : MonoBehaviour
         Debug.Log($"{gameObject.name} took {damage} damage. Health: {currentHealth}");
 
         ShowDamageNumber(damage);
+        OnDamageTaken.Invoke(damage, currentHealth);
 
         if (currentHealth <= 0)
         {
             Die();
         }
+    }
+
+    public void Heal(float amount)
+    {
+        currentHealth = Mathf.Clamp(currentHealth + amount, 0f, maxHealth);
+        Debug.Log($"{gameObject.name} healed for {amount}. Health: {currentHealth}");
+        OnDamageTaken.Invoke(-amount, currentHealth); // Invoke with negative damage for consistency
     }
 
     void ShowDamageNumber(float damage)

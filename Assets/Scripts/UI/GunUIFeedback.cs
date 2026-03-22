@@ -22,6 +22,12 @@ public class GunUIFeedback : MonoBehaviour
     [SerializeField] private Gradient healthGradient;
     [SerializeField] private float healthSegmentValue = 10f;
     [SerializeField] private float healthLerpSpeed = 8f;
+    [SerializeField] private AudioClip hitmarkerSound;
+
+    [Header("Hitmarker Audio")]
+    [SerializeField][Range(0, 1)] private float hitmarkerVolume = 0.8f;
+    [SerializeField] private float hitmarkerPitchMin = 0.9f;
+    [SerializeField] private float hitmarkerPitchMax = 1.1f;
 
     [Header("Speedometer")]
     [SerializeField] private float speedometerMaxSpeed = 12f;
@@ -220,7 +226,7 @@ public class GunUIFeedback : MonoBehaviour
         }
     }
 
-    private void HandleHitConfirmed(Collider hitCollider)
+    private void HandleHitConfirmed(Collider hitCollider, RaycastHit hit)
     {
         if (hitmarker == null || hitCollider == null) return;
 
@@ -231,6 +237,27 @@ public class GunUIFeedback : MonoBehaviour
             StopCoroutine(hitmarkerRoutine);
 
         hitmarkerRoutine = StartCoroutine(HitmarkerRoutine());
+        PlayHitmarkerSound();
+    }
+
+    private void PlayHitmarkerSound()
+    {
+        if (hitmarkerSound == null) return;
+
+        // Play at player position as 2D feedback (always clear and audible)
+        Vector3 playPosition = player != null ? player.transform.position : transform.position;
+        
+        GameObject tempAudio = new GameObject("HitmarkerSFX");
+        tempAudio.transform.position = playPosition;
+        
+        AudioSource source = tempAudio.AddComponent<AudioSource>();
+        source.clip = hitmarkerSound;
+        source.volume = hitmarkerVolume;
+        source.pitch = Random.Range(hitmarkerPitchMin, hitmarkerPitchMax);
+        source.spatialBlend = 0f; // 2D audio - always same volume
+        source.Play();
+        
+        Destroy(tempAudio, hitmarkerSound.length);
     }
 
     private IEnumerator HitmarkerRoutine()
