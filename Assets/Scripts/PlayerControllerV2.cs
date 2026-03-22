@@ -140,6 +140,8 @@ public class PlayerControllerV2 : MonoBehaviour
     public InputActionReference AdsAction => adsAction;
 
     public bool IsWallRunning => isWallRunning;
+    // Set by status effects (pitch, yaw) in degrees — applied each frame in HandleMouseLook
+    public Vector2 ShakeOffset { get; set; }
 
     void Start()
     {
@@ -296,9 +298,9 @@ public class PlayerControllerV2 : MonoBehaviour
         }
         lastYaw = yaw;
 
-        transform.rotation = Quaternion.Euler(0f, yaw, 0f);
+        transform.rotation = Quaternion.Euler(0f, yaw + ShakeOffset.y, 0f);
         if (cameraHolder != null)
-            cameraHolder.localEulerAngles = new Vector3(finalPitch, 0f, currentCameraTilt);
+            cameraHolder.localEulerAngles = new Vector3(finalPitch + ShakeOffset.x, 0f, currentCameraTilt);
     }
 
     // ───────── Shooting & Recoil ─────────
@@ -386,6 +388,19 @@ public class PlayerControllerV2 : MonoBehaviour
             wallJumpChainCount = 0;
             lastGroundedTime = Time.time;
             if (verticalVelocity <= 0f) slideJumpMinSpeed = 0f; // clear on landing
+        }
+
+        // If fully stunned (movementSpeedMultiplier == 0), kill velocity and skip movement
+        if (IsStunned())
+        {
+            horizontalVelocity = Vector3.zero;
+            isSliding = false;
+            movementSpeed = 0f;
+            if (frameGrounded && verticalVelocity < 0f)
+                verticalVelocity = -groundStickForce;
+            verticalVelocity += gravity * Time.deltaTime;
+            controller.Move(Vector3.up * verticalVelocity * Time.deltaTime);
+            return;
         }
 
         Vector2 input = ReadVec2(moveAction);
@@ -792,8 +807,12 @@ public class PlayerControllerV2 : MonoBehaviour
         }
 
         // Apply status effect FOV modifier (slowness usually means reduced FOV)
-        float fovMultiplier = GetMovementSpeedMultiplier();
-        target *= fovMultiplier;
+        // Skip when fully stunned — a stun shouldn't collapse the FOV
+        if (!IsStunned())
+        {
+            float fovMultiplier = GetMovementSpeedMultiplier();
+            target *= fovMultiplier;
+        }
 
         virtualCamera.Lens.FieldOfView = Mathf.Lerp(virtualCamera.Lens.FieldOfView, target, Time.deltaTime * fovLerpSpeed);
     }
@@ -817,6 +836,20 @@ public class PlayerControllerV2 : MonoBehaviour
         }
 
         return slowest;
+    }
+
+    bool IsStunned()
+    {
+        if (statusEffectManager == null) return false;
+
+        var activeEffects = statusEffectManager.GetActiveEffects();
+        foreach (var effect in activeEffects.Values)
+        {
+            if (effect.statusEffect.causesMovementImpairment &&
+                effect.statusEffect.movementSpeedMultiplier <= 0f)
+                return true;
+        }
+        return false;
     }
 
     static readonly Collider[] standUpBuffer = new Collider[8];
