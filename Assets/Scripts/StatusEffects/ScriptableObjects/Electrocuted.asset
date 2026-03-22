@@ -9,22 +9,24 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f15429bff309b794198b613f556df489, type: 3}
-  m_Name: BarbWire
+  m_Script: {fileID: 11500000, guid: 422c67ea61fa138488130e2b2c9ac340, type: 3}
+  m_Name: Electrocuted
   m_EditorClassIdentifier: 
-  effectName: Barbed Wire
+  effectName: Electrocuted
   description: Describes what this status effect does
-  icon: {fileID: 21300000, guid: 32821a1b956bc9c41a04e29b2ad8861a, type: 3}
+  icon: {fileID: 21300000, guid: 0f4cb4821375ea14eb90883b26ff567a, type: 3}
   duration: 1
   isInfinite: 0
   overlayColor: {r: 1, g: 1, b: 1, a: 0.2}
-  overlayIntensity: 1
-  overlaySprite: {fileID: 21300000, guid: c4d3515a1da8c6842b75172e6037ae8e, type: 3}
-  useOverlaySprite: 1
-  applySFX: {fileID: 8300000, guid: 1bf7f08e83ff2514e8a9bac908129376, type: 3}
+  overlayIntensity: 0.3
+  overlaySprite: {fileID: 0}
+  useOverlaySprite: 0
+  applySFX: {fileID: 8300000, guid: 55814ef5b51997348b4b58dfafbc69b3, type: 3}
   loopingSFX: {fileID: 0}
   volume: 1
-  damagePerSecond: 1
+  damagePerSecond: 10
   causesMovementImpairment: 1
-  movementSpeedMultiplier: 0.504
-  tickRate: 0.2
+  movementSpeedMultiplier: 0
+  tickRate: 0.3
+  cameraShakeIntensity: 0.4
+  cameraShakeSpeed: 30

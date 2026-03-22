@@ -2,9 +2,7 @@ using UnityEngine;
 using System;
 using System.Collections.Generic;
 
-/// <summary>
 /// Manages all active status effects on a character/player
-/// </summary>
 public class StatusEffectManager : MonoBehaviour
 {
     [SerializeField] private float statusEffectCheckInterval = 0.1f;
@@ -30,19 +28,20 @@ public class StatusEffectManager : MonoBehaviour
 
     private void Update()
     {
-        effectCheckTimer += Time.deltaTime;
+        // OnUpdate runs every frame so things like camera shake and movement
+        // impairment are applied continuously, not in 0.1s chunks
+        TickEffectUpdates(Time.deltaTime);
 
+        // Expiry check only needs to run on the interval
+        effectCheckTimer += Time.deltaTime;
         if (effectCheckTimer >= statusEffectCheckInterval)
         {
-            float deltaTime = effectCheckTimer;
             effectCheckTimer = 0f;
-            UpdateActiveEffects(deltaTime);
+            CheckForExpiredEffects();
         }
     }
 
-    /// <summary>
     /// Apply a status effect to this character
-    /// </summary>
     public void ApplyEffect(StatusEffect effect)
     {
         if (effect == null) return;
@@ -76,9 +75,7 @@ public class StatusEffectManager : MonoBehaviour
         Debug.Log($"Applied status effect: {effectId}");
     }
 
-    /// <summary>
     /// Remove a specific status effect by name
-    /// </summary>
     public void RemoveEffect(string effectName)
     {
         if (!activeEffects.ContainsKey(effectName)) return;
@@ -92,18 +89,12 @@ public class StatusEffectManager : MonoBehaviour
 
         Debug.Log($"Removed status effect: {effectName}");
     }
-
-    /// <summary>
     /// Get all currently active effects
-    /// </summary>
     public Dictionary<string, ActiveStatusEffect> GetActiveEffects()
     {
         return new Dictionary<string, ActiveStatusEffect>(activeEffects);
     }
-
-    /// <summary>
     /// Check if a specific effect is active
-    /// </summary>
     public bool HasEffect(string effectName)
     {
         return activeEffects.ContainsKey(effectName);
@@ -121,34 +112,38 @@ public class StatusEffectManager : MonoBehaviour
         return -1f;
     }
 
-    private void UpdateActiveEffects(float deltaTime)
+    private void TickEffectUpdates(float deltaTime)
     {
-        effectsToRemove.Clear();
-
         foreach (var kvp in activeEffects)
         {
             var activeEffect = kvp.Value;
             activeEffect.Update(deltaTime);
 
-            // Call the effect's update callback
+            // Call the effect's update callback every frame
             activeEffect.statusEffect.OnUpdate(gameObject, deltaTime);
-
-            // Check if effect has expired
-            if (activeEffect.HasExpired())
-            {
-                effectsToRemove.Add(kvp.Key);
-            }
-        }
-
-        // Remove expired effects
-        foreach (var effectName in effectsToRemove)
-        {
-            RemoveEffect(effectName);
         }
 
         if (activeEffects.Count > 0)
         {
             EffectsUpdated?.Invoke(activeEffects);
+        }
+    }
+
+    private void CheckForExpiredEffects()
+    {
+        effectsToRemove.Clear();
+
+        foreach (var kvp in activeEffects)
+        {
+            if (kvp.Value.HasExpired())
+            {
+                effectsToRemove.Add(kvp.Key);
+            }
+        }
+
+        foreach (var effectName in effectsToRemove)
+        {
+            RemoveEffect(effectName);
         }
     }
 
@@ -163,9 +158,7 @@ public class StatusEffectManager : MonoBehaviour
     }
 }
 
-/// <summary>
 /// Runtime instance of an active status effect
-/// </summary>
 public class ActiveStatusEffect
 {
     public StatusEffect statusEffect { get; private set; }
