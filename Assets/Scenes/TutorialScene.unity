@@ -109547,6 +109547,18 @@ MonoBehaviour:
   crouchSpeed: 3
   crouchHeight: 1.4
   crouchTransitionSpeed: 8
+  wallRunGravity: -0.5
+  wallRunTiltAngle: 15
+  wallRunTiltSpeed: 8
+  wallDetectionDistance: 0.7
+  wallJumpForce: 6
+  wallJumpSideForce: 6
+  wallJumpChainBoost: 1.15
+  wallJumpMaxChainMultiplier: 1.6
+  wallJumpChainResetTime: 1.2
+  wallMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
   slideBoostMultiplier: 0.3
   slideSlopeAcceleration: 1
   slideSlopeSpeedBonus: 0.5

@@ -26,10 +26,19 @@ public class PlayerControllerV2 : MonoBehaviour
 
     [Header("Wall Running")]
     [SerializeField] float wallRunGravity = -5f;
+    [SerializeField] float wallRunTiltAngle = 15f;
+    [SerializeField] float wallRunTiltSpeed = 8f;
     [SerializeField] float wallDetectionDistance = 0.7f;
     [SerializeField] float wallJumpForce = 8f;
     [SerializeField] float wallJumpSideForce = 6f;
+
+    [Header("Wall Jump Chain (Experimenting)")]
+    [SerializeField] float wallJumpChainBoost = 1.15f;
+    [SerializeField] float wallJumpMaxChainMultiplier = 1.6f;
+    [SerializeField] float wallJumpChainResetTime = 1.2f;
+
     [SerializeField] LayerMask wallMask = ~0;
+
 
     [Header("Sliding")]
     [SerializeField] float slideBoostMultiplier = 0.3f;
@@ -106,8 +115,13 @@ public class PlayerControllerV2 : MonoBehaviour
     float recoilOffset;
     Outline currentOutline;
     bool currentOutlineAdded;
+    float currentCameraTilt;
 
-    
+    //Experimental
+    int wallJumpChainCount;
+    float lastWallJumpTime;
+
+
     Vector3 wallNormal;
     float wallRunStartTime;
 
@@ -191,6 +205,7 @@ public class PlayerControllerV2 : MonoBehaviour
         HandleSlide();
         HandleCrouch();
         HandleWallRun();
+        HandleWallRunTilt();
         HandleMovement();
         UpdateHeightAndCamera();
         HandleCameraFov();
@@ -276,7 +291,7 @@ public class PlayerControllerV2 : MonoBehaviour
 
         transform.rotation = Quaternion.Euler(0f, yaw, 0f);
         if (cameraHolder != null)
-            cameraHolder.localEulerAngles = new Vector3(finalPitch, 0f, 0f);
+            cameraHolder.localEulerAngles = new Vector3(finalPitch, 0f, currentCameraTilt);
     }
 
     // ───────── Shooting & Recoil ─────────
@@ -361,6 +376,7 @@ public class PlayerControllerV2 : MonoBehaviour
 
         if (frameGrounded)
         {
+            wallJumpChainCount = 0;
             lastGroundedTime = Time.time;
             if (verticalVelocity <= 0f) slideJumpMinSpeed = 0f; // clear on landing
         }
@@ -483,7 +499,7 @@ public class PlayerControllerV2 : MonoBehaviour
     {
         if (controller == null) return;
 
-        // Wall Jump, Overrides default jump when on wall.
+        //Wall Jump, Overrides default jump when on wall.
         if (isWallRunning && Pressed(jumpAction))
         {
             isWallRunning = false;
@@ -509,6 +525,41 @@ public class PlayerControllerV2 : MonoBehaviour
             justJumped = true;
             return;
         }
+
+        //EXPERIMENTAL
+        //if (isWallRunning && Pressed(jumpAction))
+        //{
+        //    isWallRunning = false;
+
+        //    verticalVelocity = wallJumpForce;
+
+        //    if (Time.time - lastWallJumpTime > wallJumpChainResetTime)
+        //        wallJumpChainCount = 0;
+
+        //    wallJumpChainCount++;
+        //    lastWallJumpTime = Time.time;
+
+        //    float chainMultiplier = Mathf.Pow(wallJumpChainBoost, wallJumpChainCount);
+        //    chainMultiplier = Mathf.Min(chainMultiplier, wallJumpMaxChainMultiplier);
+
+        //    float currentSpeed = horizontalVelocity.magnitude;
+
+        //    Vector3 pushDir = (wallNormal + Vector3.up * 0.5f).normalized;
+
+        //    Vector3 newVelocity =
+        //        horizontalVelocity +
+        //        pushDir * wallJumpSideForce * chainMultiplier;
+
+        //    float maxAllowedSpeed = Mathf.Max(currentMoveMaxSpeed, airMaxSpeed) * wallJumpMaxChainMultiplier;
+
+        //    if (newVelocity.magnitude > maxAllowedSpeed)
+        //        newVelocity = newVelocity.normalized * maxAllowedSpeed;
+
+        //    horizontalVelocity = newVelocity;
+
+        //    justJumped = true;
+        //    return;
+        //}
 
         // Buffer jump input so it's not lost if grounding flickers
         // Hold to keep the buffer alive (optional)
@@ -616,6 +667,25 @@ public class PlayerControllerV2 : MonoBehaviour
         return false;
     }
 
+    void HandleWallRunTilt()
+    {
+        if (cameraHolder == null) return;
+
+        float targetTilt = 0f;
+
+        if (isWallRunning)
+        {
+            float side = Vector3.Dot(wallNormal, transform.right);
+
+            if (side > 0f)
+                targetTilt = -wallRunTiltAngle; // right wall
+            else
+                targetTilt = wallRunTiltAngle;  // left wall
+        }
+
+        currentCameraTilt = Mathf.Lerp(currentCameraTilt, targetTilt, Time.deltaTime * wallRunTiltSpeed);
+    }
+
     void HandleWallRun()
     {
         // Stop if grounded
@@ -638,7 +708,7 @@ public class PlayerControllerV2 : MonoBehaviour
 
             verticalVelocity = wallRunGravity;
 
-            
+
             Vector3 wallForward = Vector3.Cross(wallNormal, Vector3.up);
 
             if (Vector3.Dot(wallForward, transform.forward) < 0f)
