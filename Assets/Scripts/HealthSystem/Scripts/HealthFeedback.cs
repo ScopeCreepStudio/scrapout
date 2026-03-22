@@ -185,11 +185,6 @@ public class HealthFeedback : MonoBehaviour
                         lastHeartbeatTime = Time.time;
                     }
                 }
-                else if (heartbeatSource.isPlaying)
-                {
-                    // Stop heartbeat if health is above threshold
-                    heartbeatSource.Stop();
-                }
             }
 
             // Update vignette alpha based on health
