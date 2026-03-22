@@ -546,6 +546,14 @@ public class GunAssembler : MonoBehaviour
 
         hole.transform.SetPositionAndRotation(position, rotation);
         hole.SetActive(true);
+
+        // Play all particle systems in the bullet hole object
+        ParticleSystem[] particles = hole.GetComponentsInChildren<ParticleSystem>(true);
+        foreach (var ps in particles)
+        {
+            ps.Play();
+        }
+
         bulletHolePool.Enqueue(hole);
     }
 }

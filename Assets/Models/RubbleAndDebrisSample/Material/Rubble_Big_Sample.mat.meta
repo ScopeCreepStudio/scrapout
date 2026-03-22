@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: cb36ead6b81a365488d9558bc8258a66
+timeCreated: 1526409383
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: -1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 118763
+  packageName: Rubble and Debris - Modular Set - Free Sample
+  packageVersion: 1.0
+  assetPath: Assets/RubbleAndDebrisSample/Material/Rubble_Big_Sample.mat
+  uploadId: 246205

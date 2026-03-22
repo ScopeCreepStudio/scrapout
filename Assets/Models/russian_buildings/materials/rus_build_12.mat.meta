@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: ddff7df3145ead144baf2bed8e8126cc
+timeCreated: 1521113953
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 113375
+  packageName: Russian buildings pack
+  packageVersion: 1.1
+  assetPath: Assets/russian_buildings/materials/rus_build_12.mat
+  uploadId: 239081

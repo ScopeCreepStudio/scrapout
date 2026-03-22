@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 860a66ca4259b384f9ec01b687f71c3c
+timeCreated: 1498417791
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 94001
+  packageName: 8K Milky Way Skybox
+  packageVersion: 1.0
+  assetPath: Assets/MilkyWay/Material/MilkyWay.mat
+  uploadId: 186866

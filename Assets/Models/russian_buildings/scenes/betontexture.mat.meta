@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: d47cdcdb8a10ee448937fb7907628812
+timeCreated: 1520528049
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 113375
+  packageName: Russian buildings pack
+  packageVersion: 1.1
+  assetPath: Assets/russian_buildings/scenes/betontexture.mat
+  uploadId: 239081

@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 8459d2d575caf3742b837875922c5e95
+timeCreated: 1522147401
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 113375
+  packageName: Russian buildings pack
+  packageVersion: 1.1
+  assetPath: Assets/russian_buildings/prefabs/buildings/rus_build_5et_02a.prefab
+  uploadId: 239081

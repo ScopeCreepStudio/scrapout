@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6468c3e47fee7b344b43741e2db02d67, type: 3}
+  m_Name: DefaultMagazinie
+  m_EditorClassIdentifier: 
+  partName: DefaultMag
+  partType: 3
+  modelPrefab: {fileID: 3809943727123288178, guid: c69248c72492ff8498a354dafd93b2b1, type: 3}
+  damageModifier: 0
+  fireRateModifier: 0
+  recoilModifier: 0
+  accuracyModifier: 0
+  rangeModifier: 0
+  ammoCapacityModifier: 6
+  reloadSpeedModifier: 0

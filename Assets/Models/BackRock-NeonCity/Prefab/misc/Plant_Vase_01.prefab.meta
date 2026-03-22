@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 7de50d5a3b0d1c74bb541e18a0d30f0a
+timeCreated: 1523506694
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 298393
+  packageName: Neon Capital City - Low Poly Urban Environment
+  packageVersion: 1.0
+  assetPath: Assets/Models/BackRock-NeonCity/Prefab/misc/Plant_Vase_01.prefab
+  uploadId: 706025
