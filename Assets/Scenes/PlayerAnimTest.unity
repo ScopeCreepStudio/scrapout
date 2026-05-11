@@ -358,7 +358,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8892049}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.07708273, y: 0.0018216271, z: -0.00014083525, w: 0.99702305}
+  m_LocalRotation: {x: 0.07708268, y: 0.0020926944, z: -0.00016179221, w: 0.9970225}
   m_LocalPosition: {x: 0.41533184, y: 1.7311668, z: -8.046151}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -496,7 +496,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 96502047}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.07708273, y: 0.0018216271, z: -0.00014083524, w: 0.99702305}
+  m_LocalRotation: {x: 0.07708267, y: 0.0020926944, z: -0.00016179224, w: 0.9970225}
   m_LocalPosition: {x: -3.4436996, y: 2.4174368, z: 6.467579}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -700,96 +700,6 @@ Mesh:
     offset: 0
     size: 0
     path: 
---- !u!1001 &455993855
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: -8679921383154817045, guid: 22135b62022d0364c9a48ba0cb9a67c0, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -6.0318775
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 22135b62022d0364c9a48ba0cb9a67c0, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.117436886
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 22135b62022d0364c9a48ba0cb9a67c0, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 13.8
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 22135b62022d0364c9a48ba0cb9a67c0, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 22135b62022d0364c9a48ba0cb9a67c0, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 22135b62022d0364c9a48ba0cb9a67c0, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 22135b62022d0364c9a48ba0cb9a67c0, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 22135b62022d0364c9a48ba0cb9a67c0, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 22135b62022d0364c9a48ba0cb9a67c0, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 22135b62022d0364c9a48ba0cb9a67c0, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 919132149155446097, guid: 22135b62022d0364c9a48ba0cb9a67c0, type: 3}
-      propertyPath: m_Name
-      value: CharacterRigged@Running Slide (1)
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 22135b62022d0364c9a48ba0cb9a67c0, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1443245423}
-    - targetCorrespondingSourceObject: {fileID: -516098083770646512, guid: 22135b62022d0364c9a48ba0cb9a67c0, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 518725340}
-  m_SourcePrefab: {fileID: 100100000, guid: 22135b62022d0364c9a48ba0cb9a67c0, type: 3}
---- !u!1 &518725338 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: -516098083770646512, guid: 22135b62022d0364c9a48ba0cb9a67c0, type: 3}
-  m_PrefabInstance: {fileID: 455993855}
-  m_PrefabAsset: {fileID: 0}
---- !u!95 &518725340
-Animator:
-  serializedVersion: 7
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 518725338}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_AnimatePhysics: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &686679694
 GameObject:
   m_ObjectHideFlags: 0
@@ -1410,33 +1320,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1443245422 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 22135b62022d0364c9a48ba0cb9a67c0, type: 3}
-  m_PrefabInstance: {fileID: 455993855}
-  m_PrefabAsset: {fileID: 0}
---- !u!95 &1443245423
-Animator:
-  serializedVersion: 7
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1443245422}
-  m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: 29a4f983db5907c4dbd113f08492790d, type: 3}
-  m_Controller: {fileID: 9100000, guid: 172f693740058c74684b6dd6e173a96c, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_AnimatePhysics: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &1623305935 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 29a4f983db5907c4dbd113f08492790d, type: 3}
@@ -1488,12 +1371,14 @@ MonoBehaviour:
   moveAction: {fileID: -1680190386980627800, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   sprintAction: {fileID: -7471211009204490832, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   crouchAction: {fileID: 7040659881675835329, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+  jumpAction: {fileID: -2099379676528639254, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   blendSmoothTime: 0.1
   walkAnimatorSpeed: 1
   sprintAnimatorSpeed: 1.25
   crouchAnimatorSpeed: 0.8
   walkSpeed: 6
   sprintSpeed: 10
+  jumpForce: 6
   crouchSpeed: 3
   rotationSpeed: 10
   gravity: -20
@@ -1687,4 +1572,3 @@ SceneRoots:
   - {fileID: 96502052}
   - {fileID: 1028163833}
   - {fileID: 686679695}
-  - {fileID: 455993855}

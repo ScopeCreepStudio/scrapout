@@ -13,6 +13,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] InputActionReference moveAction;
     [SerializeField] InputActionReference sprintAction;
     [SerializeField] InputActionReference crouchAction;
+    [SerializeField] InputActionReference jumpAction;
 
     [Header("Animation Blend")]
     [SerializeField] float blendSmoothTime = 0.1f;
@@ -23,6 +24,7 @@ public class PlayerMovement : MonoBehaviour
     [Header("Movement")]
     [SerializeField] float walkSpeed = 6f;
     [SerializeField] float sprintSpeed = 10f;
+    [SerializeField] float jumpForce = 6f;
     [SerializeField] float crouchSpeed = 3f;
     [SerializeField] float rotationSpeed = 10f;
     [SerializeField] float gravity = -20f;
@@ -58,6 +60,11 @@ public class PlayerMovement : MonoBehaviour
         if (crouchAction != null)
         {
             crouchAction.action.Enable();
+
+        if (jumpAction != null)
+        {
+            jumpAction.action.Enable();
+        }
         }
     }
 
@@ -76,6 +83,11 @@ public class PlayerMovement : MonoBehaviour
         if (sprintAction != null)
         {
             sprintAction.action.Disable();
+
+        if (jumpAction != null)
+        {
+            jumpAction.action.Disable();
+        }
         }
 
         if (crouchAction != null)
@@ -115,7 +127,11 @@ public class PlayerMovement : MonoBehaviour
         // Handle IK look direction for first person
         if (cameraController != null && cameraController.IsFirstPerson && animator != null)
         {
-            UpdateIKLookDirection();
+            // The body is now rotated by CameraController, we just update the look direction for IK
+            if (cameraTransform != null)
+            {
+                lastLookDirection = Vector3.Lerp(lastLookDirection, cameraTransform.forward, Time.deltaTime * 5f);
+            }
         }
 
         debugStatus = $"Move: {moveInput}\nSprint: {isSprinting}\nCrouch: {isCrouching}\nBlendX: {currentBlendX:F2} BlendY: {currentBlendY:F2}";
@@ -131,30 +147,7 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    void UpdateIKLookDirection()
-    {
-        if (cameraTransform == null)
-        {
-            return;
-        }
-
-        // Get camera forward direction
-        Vector3 cameraForward = cameraTransform.forward;
-        lastLookDirection = Vector3.Lerp(lastLookDirection, cameraForward, Time.deltaTime * 5f);
-
-        // Only rotate body if moving AND looking too far to the side
-        if (moveInput.sqrMagnitude > 0.01f)
-        {
-            float angleToCamera = Vector3.SignedAngle(transform.forward, cameraForward, Vector3.up);
-
-            // If angle exceeds threshold, rotate the body (legs) to follow camera
-            if (Mathf.Abs(angleToCamera) > bodyRotationThreshold)
-            {
-                Quaternion targetRotation = Quaternion.LookRotation(new Vector3(cameraForward.x, 0, cameraForward.z).normalized);
-                transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, bodyRotationLerpSpeed * Time.deltaTime);
-            }
-        }
-    }
+    // The UpdateIKLookDirection method was removed because the camera controller now handles yaw on the player directly.
 
     void OnAnimatorIK(int layerIndex)
     {
@@ -210,7 +203,7 @@ public class PlayerMovement : MonoBehaviour
         // Calculate movement direction
         Vector3 moveDirection = (forward * moveInput.y + right * moveInput.x).normalized;
 
-        // Apply gravity
+        // Apply gravity and jumping
         if (!characterController.isGrounded)
         {
             verticalVelocity += gravity * Time.deltaTime;
@@ -218,6 +211,11 @@ public class PlayerMovement : MonoBehaviour
         else if (verticalVelocity < 0)
         {
             verticalVelocity = -0.5f;
+        }
+
+        if (characterController.isGrounded && jumpAction != null && jumpAction.action.WasPressedThisFrame())
+        {
+            verticalVelocity = jumpForce;
         }
 
         // Build final velocity

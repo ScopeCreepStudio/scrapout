@@ -15,7 +15,6 @@ public class CameraController : MonoBehaviour
 
     bool isFirstPerson;
     float pitch = 0f;
-    float yaw = 0f;
 
     public bool IsFirstPerson => isFirstPerson;
 
@@ -49,14 +48,16 @@ public class CameraController : MonoBehaviour
         float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity;
         float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity;
 
-        yaw += mouseX;
         pitch -= mouseY;
         pitch = Mathf.Clamp(pitch, -pitchLimit, pitchLimit);
 
-        // Apply rotation to first person camera
+        // Standard FPS: Rotate the player root horizontally (yaw)
+        transform.Rotate(Vector3.up * mouseX);
+
+        // Rotate the camera vertically (pitch)
         if (firstPersonCamera != null)
         {
-            firstPersonCamera.transform.localRotation = Quaternion.Euler(pitch, yaw, 0f);
+            firstPersonCamera.transform.localRotation = Quaternion.Euler(pitch, 0f, 0f);
         }
     }
 
